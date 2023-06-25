@@ -1,5 +1,6 @@
 const {
   client,
+  createUser
   // declare your model imports here
   // for example, User
 } = require('./');
@@ -55,11 +56,29 @@ async function buildTables() {
 
 async function populateInitialData() {
   try {
-    // create useful starting data by leveraging your
-    // Model.method() adapters to seed your db, for example:
-    // const user1 = await User.createUser({ ...user info goes here... })
+    console.log('Trying to seed tables...');
+
+    await createUser({
+      username: 'Bob',
+      password: 'BobsPassword',
+      email: 'bob@email.com'
+    });
+
+    await createUser({
+      username: 'Smith',
+      password: 'SmithsPassword',
+      email: 'smith@email.com'
+    });
+
+    await createUser({
+      username: 'John',
+      password: 'JohnsPassword',
+      email: 'john@email.com'
+    });
+
+    console.log('Success creating users!');
   } catch (error) {
-    throw error;
+    console.error(error);
   }
 }
 
