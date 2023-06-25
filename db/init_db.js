@@ -77,6 +77,12 @@ async function populateInitialData() {
     });
 
     console.log('Success creating users!');
+
+    const {rows: users} = await client.query(`
+      SELECT * FROM users;
+    `);
+    console.log('All users: ', users);
+    
   } catch (error) {
     console.error(error);
   }
