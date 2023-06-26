@@ -1,4 +1,8 @@
+const util= require('util');
+const encoder = new util.TextEncoder('utf-8');
+
 require('dotenv').config();
+
 const { 
   createUser,
 } = require('../index')
