@@ -2,6 +2,7 @@ const {
   client,
   createUser,
   createRamen,
+  createUserItem,
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -45,6 +46,7 @@ async function buildTables() {
         id SERIAL PRIMARY KEY,
         "userId" INTEGER REFERENCES users(id),
         "ramenId" INTEGER REFERENCES ramen(id),
+        UNIQUE ("userId", "ramenId"),
         count INTEGER
       );
     `);
@@ -111,6 +113,30 @@ async function populateInitialData() {
       SELECT * FROM ramen
     `);
     console.log("All Ramen", ramen);
+
+    await createUserItem({
+      userId: "2",
+      ramenId: "1",
+      count: "1",
+    });
+
+    await createUserItem({
+      userId: "1",
+      ramenId: "3",
+      count: "2",
+    });
+
+    await createUserItem({
+      userId: "3",
+      ramenId: "1",
+      count: "1",
+    });
+    console.log("Finished seeding users_items");
+
+    const { rows: users_items } = await client.query(`
+      SELECT * FROM users_items
+    `);
+    console.log("All users_items", users_items);
   } catch (error) {
     console.error(error);
   }
