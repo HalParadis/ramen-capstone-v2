@@ -1,48 +1,44 @@
-// require('dotenv').config();
-// const { 
-//   createUser,
-// } = require('../index')
-// const { buildTables } = require('../init_db');
-// const client = require('../client');
+const util= require('util');
+const encoder = new util.TextEncoder('utf-8');
 
-// let usersFromDatabase;
-// const getUsersFromDB = async () => { 
-//   const {rows} = await client.query(`
-//       SELECT * FROM users;
-//     `);
-//   usersFromDatabase = rows;
-// }
+require('dotenv').config();
 
-// describe('Users Table', () => {
-//   beforeAll(async () => {
-//     client.connect();
+const { 
+  createUser,
+} = require('../index')
+const { handle } = require('../../index');
+const client = require('../client');
 
-//     // console.log('Starting to drop tables...');
+let usersFromDatabase;
+const getUsersFromDB = async () => { 
+  const {rows} = await client.query(`
+      SELECT * FROM users;
+  `);
+  usersFromDatabase = rows;
+}
 
-//     // await client.query(`
-//     //   DROP TABLE IF EXISTS users_items;
-//     //   DROP TABLE IF EXISTS users;
-//     //   DROP TABLE IF EXISTS ramen;
-//     // `);
+describe('Users Table', () => {
+  beforeAll(async () => {
+    await getUsersFromDB();
+  });
+  afterAll(async () => {
+    await client.end();
+    handle.close();
+  });
 
-//     // console.log('Finished dropping tables!');
-
-//     await getUsersFromDB();
-//   });
-//   afterAll(async () => {
-//     client.end();
-//   });
-
-//   describe('createUser', () => {
-//     it('adds a user object to the users table', async () => {
-//       const numUsers = usersFromDatabase.length;
-//       await createUser({
-//         username: 'Bob',
-//         password: 'BobsPassword',
-//         email: 'bob@email.com'
-//       });
-//       await getUsersFromDB();
-//       expect(numUsers + 1).toEqual(usersFromDatabase.length);
-//     });
-//   });
-// })
+  describe('createUser', () => {
+    it('adds a user object to the users table', async () => {
+      await createUser({
+        username: 'FakeBob',
+        password: 'FakeBobsPassword',
+        email: 'fake-bob@email.com'
+      });
+      await getUsersFromDB();
+      const {rows: [user]} = await client.query(`
+        SELECT * FROM users
+        WHERE username = ($1);
+      `, ['FakeBob'])
+      expect(user.username).toEqual('FakeBob');
+    });
+  });
+})

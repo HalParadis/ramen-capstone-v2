@@ -9,7 +9,7 @@ const createUser = async ({username, password, email, address}) => {
       ON CONFLICT DO NOTHING
       RETURNING *;
     `, [username, password, email, address]);
-    delete user.password;
+    user && delete user.password;
     return user;
   }
   catch (err) {
