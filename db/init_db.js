@@ -1,16 +1,17 @@
 const {
   client,
-  createUser
+  createUser,
+  createRamen,
   // declare your model imports here
   // for example, User
-} = require('./');
+} = require("./");
 
 async function buildTables() {
   try {
     client.connect();
 
     // drop tables in correct order
-    console.log('Starting to drop tables...');
+    console.log("Starting to drop tables...");
 
     await client.query(`
       DROP TABLE IF EXISTS users_items;
@@ -18,10 +19,10 @@ async function buildTables() {
       DROP TABLE IF EXISTS ramen;
     `);
 
-    console.log('Finished dropping tables!');
+    console.log("Finished dropping tables!");
 
     // build tables in correct order
-    console.log('Starting to construct tables...');
+    console.log("Starting to construct tables...");
 
     await client.query(`
       CREATE TABLE users(
@@ -48,7 +49,7 @@ async function buildTables() {
       );
     `);
 
-    console.log('Finished constructing tables!');
+    console.log("Finished constructing tables!");
   } catch (error) {
     console.error(error);
   }
@@ -56,33 +57,60 @@ async function buildTables() {
 
 async function populateInitialData() {
   try {
-    console.log('Trying to seed tables...');
+    console.log("Trying to seed tables...");
 
     await createUser({
-      username: 'Bob',
-      password: 'BobsPassword',
-      email: 'bob@email.com'
+      username: "Bob",
+      password: "BobsPassword",
+      email: "bob@email.com",
     });
 
     await createUser({
-      username: 'Smith',
-      password: 'SmithsPassword',
-      email: 'smith@email.com'
+      username: "Smith",
+      password: "SmithsPassword",
+      email: "smith@email.com",
     });
 
     await createUser({
-      username: 'John',
-      password: 'JohnsPassword',
-      email: 'john@email.com'
+      username: "John",
+      password: "JohnsPassword",
+      email: "john@email.com",
     });
 
-    console.log('Success creating users!');
+    console.log("Success creating users!");
 
-    const {rows: users} = await client.query(`
+    const { rows: users } = await client.query(`
       SELECT * FROM users;
     `);
-    console.log('All users: ', users);
-    
+    console.log("All users: ", users);
+
+    await createRamen({
+      name: "Shrimp Flavored Cup Noodles",
+      price: "$1.00",
+      description: "Amazing noodles",
+      brand: "Nissan",
+    });
+
+    await createRamen({
+      name: "Tonkotsu Ramen",
+      price: "$2.00",
+      description: "Extra Amazing Ramen",
+      brand: "Sapporo Ichiban",
+    });
+
+    await createRamen({
+      name: "Ramen",
+      price: "$2.50",
+      description: "Korean Beef Flavored Noodle Soup",
+      brand: "Gomtang",
+    });
+
+    console.log("Finished Seeding Ramen");
+
+    const { rows: ramen } = await client.query(`
+      SELECT * FROM ramen
+    `);
+    console.log("All Ramen", ramen);
   } catch (error) {
     console.error(error);
   }

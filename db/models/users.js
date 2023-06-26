@@ -17,6 +17,7 @@ const createUser = async ({username, password, email, address}) => {
   }
 }
 
+ 
 module.exports = {
   // add your database adapter fns here
   createUser,
