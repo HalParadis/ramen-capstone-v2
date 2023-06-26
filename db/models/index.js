@@ -4,7 +4,8 @@ module.exports = {
   // for example, create a users.js file for a User model
   // and User: require('./user') here
   ...require('./users'),
-  ...require('./ramen')
+  ...require('./ramen'),
+  ...require('./users_items')
 };
 
 // then, in your API, you'll require the appropriate model
