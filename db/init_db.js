@@ -3,6 +3,8 @@ const {
   createUser,
   createRamen,
   createUserItem,
+  getAllRamen,
+  getRamenById
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -113,6 +115,7 @@ async function populateInitialData() {
       SELECT * FROM ramen
     `);
     console.log("All Ramen", ramen);
+   
 
     await createUserItem({
       userId: "2",
