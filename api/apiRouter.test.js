@@ -1,6 +1,3 @@
-const util= require('util');
-const encoder = new util.TextEncoder('utf-8');
-
 const { server, handle } = require('../index');
 const { client } = require('../db');
 const supertest = require('supertest');
