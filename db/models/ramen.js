@@ -39,9 +39,43 @@ const getRamenById = async (id) => {
   }
 }
 
+const deleteRamen = async (id) => {
+    const setString = Object.keys(fields).map(
+        (key, index) => `"${key}"=$${index + 1}`
+    ).join(', ')
+    try{
+        const {rows: [ramen]} = await client.query(`
+        DELETE FROM ramen
+        WHERE id=${id}
+        RETURNING *
+        `,)
+        return ramen;
+    } catch(error){
+        console.error(error)
+    }
+}
+
+const updateRamen = async ({id, ...fields}) =>{
+    const setString = Object.keys(fields).map(
+        (key, index) => `"${key}"=$${index + 1}`
+    ).join(', ')
+    try{
+        const {rows: [ramen]} = await client.query(`
+        UPDATE ramen
+        SET ${setString}
+        WHERE id=${id}
+        RETURNING *
+        `,Object.values(fields))
+        return ramen;
+    } catch(error){
+        console.error(error)
+    }
+}
 
 module.exports = {
   createRamen,
   getAllRamen,
-  getRamenById
+  getRamenById,
+  deleteRamen, 
+  updateRamen
 }
