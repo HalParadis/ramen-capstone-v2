@@ -28,6 +28,11 @@ export async function getAllRamenFromAPI() {
   }
 }
 
+export async function getRamenByIdFromAPI(id) {
+  const { data: ramen } = await axios.get(`/api/ramen/${id}`);
+  return ramen;
+}
+
 export async function getAPIHealth() {
   try {
     const { data } = await axios.get('/api/health');
