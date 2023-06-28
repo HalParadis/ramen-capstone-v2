@@ -4,7 +4,9 @@ const {
   createRamen,
   createUserItem,
   getAllRamen,
-  getRamenById
+  getRamenById,
+  deleteRamen,
+  updateRamen
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -108,6 +110,7 @@ async function populateInitialData() {
       description: "Korean Beef Flavored Noodle Soup",
       brand: "Gomtang",
     });
+
 
     console.log("Finished Seeding Ramen");
 
