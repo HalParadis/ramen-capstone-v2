@@ -40,9 +40,6 @@ const getRamenById = async (id) => {
 }
 
 const deleteRamen = async (id) => {
-    const setString = Object.keys(fields).map(
-        (key, index) => `"${key}"=$${index + 1}`
-    ).join(', ')
     try{
         const {rows: [ramen]} = await client.query(`
         DELETE FROM ramen

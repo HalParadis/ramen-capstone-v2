@@ -6,7 +6,13 @@ const {
   getAllRamen,
   getRamenById,
   deleteRamen,
-  updateRamen
+  updateRamen,
+  getAllUsers,
+  getUserById,
+  getUserByUsername,
+  getUserByUsernameAndPassword,
+  updateUser,
+  deleteUser
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -85,9 +91,17 @@ async function populateInitialData() {
 
     console.log("Success creating users!");
 
-    const { rows: users } = await client.query(`
-      SELECT * FROM users;
-    `);
+    // const { rows: users } = await client.query(`
+    //   SELECT * FROM users;
+    // `);
+
+    await updateUser({
+      id:3,
+      username: "Jim",
+      password: "JohnsPassword",
+      email: "john@email.com",
+    })
+    const users = await getAllUsers()
     console.log("All users: ", users);
 
     await createRamen({
