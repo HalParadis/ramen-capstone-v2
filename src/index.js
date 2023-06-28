@@ -7,7 +7,7 @@ import { App } from './components';
 // place them in the src/style directory, and import them like this:
 import './style/index.css';
 
-const rootEl = document.getElementById('app');
+const rootEl = document.getElementById('root');
 const root = ReactDOMClient.createRoot(rootEl);
 root.render(<BrowserRouter><App/></BrowserRouter>);
 
