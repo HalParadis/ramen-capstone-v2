@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import ReactDOMClient from 'react-dom/client';
 import { App } from './components';
@@ -10,5 +9,3 @@ import './style/index.css';
 const rootEl = document.getElementById('root');
 const root = ReactDOMClient.createRoot(rootEl);
 root.render(<BrowserRouter><App/></BrowserRouter>);
-
-// ReactDOM.render(<App />, document.getElementById('root'));

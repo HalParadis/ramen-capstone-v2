@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { fetchFromAPI } from '../api';
 import { getRamenByIdFromAPI } from '../axios-services';
 
 const Products = ({

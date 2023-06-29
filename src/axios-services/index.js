@@ -29,8 +29,13 @@ export async function getAllRamenFromAPI() {
 }
 
 export async function getRamenByIdFromAPI(id) {
-  const { data: ramen } = await axios.get(`/api/ramen/${id}`);
-  return ramen;
+  try {
+    const { data: ramen } = await axios.get(`/api/ramen/${id}`);
+    return ramen;
+  }
+  catch (err) {
+    console.error(err);
+  }
 }
 
 export async function getAPIHealth() {

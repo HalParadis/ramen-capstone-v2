@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Link } from 'react-router-dom';
-// import { fetchFromAPI } from '../api';
 
 import {
   Products
@@ -15,13 +14,6 @@ import '../style/App.css';
 const App = () => {
   const [APIHealth, setAPIHealth] = useState('');
   const [allRamen, setAllRamen] = useState([]);
-
-  // const fetchProducts = async () => {
-  //   const fetchRamen = await fetchFromAPI({
-  //     endpoint: "ramen",
-  //   });
-  //   setAllRamen(fetchRamen);
-  // }
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
