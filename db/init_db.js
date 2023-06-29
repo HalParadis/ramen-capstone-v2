@@ -95,12 +95,7 @@ async function populateInitialData() {
     //   SELECT * FROM users;
     // `);
 
-    await updateUser({
-      id:3,
-      username: "Jim",
-      password: "JohnsPassword",
-      email: "john@email.com",
-    })
+
     const users = await getAllUsers()
     console.log("All users: ", users);
 

@@ -77,6 +77,7 @@ const getUserByUsernameAndPassword = async ({ username, password }) => {
 };
 
 const updateUser = async ({ id, ...fields }) => {
+  const password = fields.password
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
@@ -87,10 +88,17 @@ const updateUser = async ({ id, ...fields }) => {
      WHERE id=${id}
      RETURNING *;
      `, Object.values(fields));
-     
+
+     if(password){
       const SALT_COUNT = 5;
-      const hashedPassword = await bcrypt.hash(user.password, SALT_COUNT);
-      
+      const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+     const {rows: [user]} = await client.query(`
+     UPDATE users
+     SET password=$1
+     WHERE id=$2
+     RETURNING *;
+     `,[hashedPassword, id]);
+     }
      console.log(user.password)
     return user;
   } catch (error) {
