@@ -1,6 +1,7 @@
 // grab our db client connection to use with our adapters
 const client = require('../client');
 const bcrypt = require('bcrypt')
+const {getUsersItemsByUserId, deleteUserItem}= require('./users_items')
 
 const createUser = async ({username, password, email, address}) => {
       const SALT_COUNT = 5;
@@ -106,11 +107,16 @@ const updateUser = async ({ id, ...fields }) => {
 
 const deleteUser = async (id) => {
   try {
+    const usersItemsArr = await getUsersItemsByUserId(id)
+    usersItemsArr.forEach( async (userItem) => {
+      await deleteUserItem(userItem.id)
+    })
     const {rows: [user]} = await client.query(`
-  DELETE FROM users
-  WHERE id=${id}
-  RETURNING *;
+      DELETE FROM users
+      WHERE id=${id}
+      RETURNING *;
   `);
+  return user;
   } catch (error) {
     console.error(error);
   }
@@ -119,5 +125,6 @@ const deleteUser = async (id) => {
 module.exports = {
   // add your database adapter fns here
   createUser,
-  getAllUsers
+  getAllUsers,
+  deleteUser
 };

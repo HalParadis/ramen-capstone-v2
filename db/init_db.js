@@ -3,11 +3,15 @@ const {
   createUser,
   createRamen,
   createUserItem,
+  getUsersItemsByUserId,
+  updateUserItemCount,
+  deleteUserItem,
   getAllRamen,
   getRamenById,
   deleteRamen,
   updateRamen,
-  getAllUsers
+  getAllUsers,
+  deleteUser
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -90,7 +94,6 @@ async function populateInitialData() {
     //   SELECT * FROM users;
     // `);
 
-
     const users = await getAllUsers()
     console.log("All users: ", users);
 
@@ -141,12 +144,19 @@ async function populateInitialData() {
       ramenId: "1",
       count: "1",
     });
+
+    await createUserItem({
+      userId: "1",
+      ramenId: "1",
+      count: "1",
+    });
     console.log("Finished seeding users_items");
 
     const { rows: users_items } = await client.query(`
       SELECT * FROM users_items
     `);
     console.log("All users_items", users_items);
+
   } catch (error) {
     console.error(error);
   }

@@ -1,4 +1,5 @@
 const client = require('../client')
+const {getUsersItemsByRamenId, deleteUserItem}= require('./users_items')
 
 const createRamen = async ({ name, price, description, brand }) => {
   try {
@@ -41,11 +42,15 @@ const getRamenById = async (id) => {
 
 const deleteRamen = async (id) => {
     try{
+        const usersItemsArr = await getUsersItemsByRamenId(id)
+        usersItemsArr.forEach(async (userItem) => {
+        await deleteUserItem(userItem.id)
+     })
         const {rows: [ramen]} = await client.query(`
         DELETE FROM ramen
         WHERE id=${id}
         RETURNING *
-        `,)
+        `)
         return ramen;
     } catch(error){
         console.error(error)
