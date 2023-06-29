@@ -1,14 +1,17 @@
 // grab our db client connection to use with our adapters
 const client = require('../client');
+const bcrypt = require('bcrypt')
 
 const createUser = async ({username, password, email, address}) => {
+      const SALT_COUNT = 5;
+      const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   try {
     const {rows: [user]} = await client.query(`
       INSERT INTO users (username, password, email, address)
       VALUES ($1, $2, $3, $4)
       ON CONFLICT DO NOTHING
       RETURNING *;
-    `, [username, password, email, address]);
+    `, [username, hashedPassword, email, address]);
     user && delete user.password;
     return user;
   }
@@ -116,4 +119,5 @@ const deleteUser = async (id) => {
 module.exports = {
   // add your database adapter fns here
   createUser,
+  getAllUsers
 };

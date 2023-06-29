@@ -6,7 +6,8 @@ const {
   getAllRamen,
   getRamenById,
   deleteRamen,
-  updateRamen
+  updateRamen,
+  getAllUsers
   // declare your model imports here
   // for example, User
 } = require("./");
