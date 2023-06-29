@@ -14,4 +14,7 @@ apiRouter.get('/health', (req, res, next) => {
 
 // place your routers here
 
+const ramenRouter = require('./ramen');
+apiRouter.use('/ramen', ramenRouter);
+
 module.exports = apiRouter;
