@@ -9,7 +9,9 @@ const {
   getAllRamen,
   getRamenById,
   deleteRamen,
-  updateRamen
+  updateRamen,
+  getAllUsers,
+  deleteUser
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -88,9 +90,11 @@ async function populateInitialData() {
 
     console.log("Success creating users!");
 
-    const { rows: users } = await client.query(`
-      SELECT * FROM users;
-    `);
+    // const { rows: users } = await client.query(`
+    //   SELECT * FROM users;
+    // `);
+
+    const users = await getAllUsers()
     console.log("All users: ", users);
 
     await createRamen({
@@ -152,9 +156,6 @@ async function populateInitialData() {
       SELECT * FROM users_items
     `);
     console.log("All users_items", users_items);
-
-    
-
 
   } catch (error) {
     console.error(error);
