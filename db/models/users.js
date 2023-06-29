@@ -77,21 +77,32 @@ const getUserByUsernameAndPassword = async ({ username, password }) => {
 };
 
 const updateUser = async ({ id, ...fields }) => {
+  const password = fields.password
+  delete fields.password
   const setString = Object.keys(fields)
+
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
   try {
+    if(setString.length){
     const {rows: [user]} = await client.query(`
      UPDATE users
      SET ${setString}
      WHERE id=${id}
      RETURNING *;
      `, Object.values(fields));
-     
-      const SALT_COUNT = 5;
-      const hashedPassword = await bcrypt.hash(user.password, SALT_COUNT);
+    }
+      if(password){
+        const SALT_COUNT = 5;
+        const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+        const {rows: [user]} = await client.query(`
+     UPDATE users
+     SET password=$1
+     WHERE id=${id}
+     RETURNING *;
+     `, [hashedPassword]);
+      }
       
-     console.log(user.password)
     return user;
   } catch (error) {
     console.error(error);
@@ -100,11 +111,13 @@ const updateUser = async ({ id, ...fields }) => {
 
 const deleteUser = async (id) => {
   try {
+    
     const {rows: [user]} = await client.query(`
-  DELETE FROM users
-  WHERE id=${id}
-  RETURNING *;
-  `);
+     DELETE FROM users
+     WHERE id=${id}
+     RETURNING *;
+   `);
+  return userItem, user;
   } catch (error) {
     console.error(error);
   }

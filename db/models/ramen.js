@@ -7,7 +7,7 @@ const createRamen = async ({ name, price, description, brand }) => {
       VALUES ($1, $2, $3, $4)
       ON CONFLICT ( name, brand ) DO NOTHING
       RETURNING *;
-      `, [name, description, price, brand]);
+      `, [name, price, description, brand]);
     return ramen;
   } catch (error) {
     console.error(error);

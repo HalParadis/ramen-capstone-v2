@@ -94,13 +94,6 @@ async function populateInitialData() {
     // const { rows: users } = await client.query(`
     //   SELECT * FROM users;
     // `);
-
-    await updateUser({
-      id:3,
-      username: "Jim",
-      password: "JohnsPassword",
-      email: "john@email.com",
-    })
     const users = await getAllUsers()
     console.log("All users: ", users);
 
@@ -152,6 +145,7 @@ async function populateInitialData() {
       count: "1",
     });
     console.log("Finished seeding users_items");
+    await deleteUser(2)
 
     const { rows: users_items } = await client.query(`
       SELECT * FROM users_items
