@@ -3,8 +3,15 @@ const {
   createUser,
   createRamen,
   createUserItem,
+  getUsersItemsByUserId,
+  updateUserItemCount,
+  deleteUserItem,
   getAllRamen,
-  getRamenById
+  getRamenById,
+  deleteRamen,
+  updateRamen,
+  getAllUsers,
+  deleteUser
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -83,9 +90,11 @@ async function populateInitialData() {
 
     console.log("Success creating users!");
 
-    const { rows: users } = await client.query(`
-      SELECT * FROM users;
-    `);
+    // const { rows: users } = await client.query(`
+    //   SELECT * FROM users;
+    // `);
+
+    const users = await getAllUsers()
     console.log("All users: ", users);
 
     await createRamen({
@@ -108,6 +117,7 @@ async function populateInitialData() {
       description: "Korean Beef Flavored Noodle Soup",
       brand: "Gomtang",
     });
+
 
     console.log("Finished Seeding Ramen");
 
@@ -134,12 +144,19 @@ async function populateInitialData() {
       ramenId: "1",
       count: "1",
     });
+
+    await createUserItem({
+      userId: "1",
+      ramenId: "1",
+      count: "1",
+    });
     console.log("Finished seeding users_items");
 
     const { rows: users_items } = await client.query(`
       SELECT * FROM users_items
     `);
     console.log("All users_items", users_items);
+
   } catch (error) {
     console.error(error);
   }
