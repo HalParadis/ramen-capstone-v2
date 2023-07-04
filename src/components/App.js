@@ -39,10 +39,12 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <h1>Hello, World!</h1>
-      <p>API Status: {APIHealth}</p>
+      <Route exact path='/'>
+        <h1>Hello, World!</h1>
+        <p>API Status: {APIHealth}</p>
+      </Route>
 
-      <Route path='/'>
+      <Route path='/products'>
         <Products
           allRamen={allRamen}
           fetchRamen={fetchRamen}

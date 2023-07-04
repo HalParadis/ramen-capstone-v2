@@ -21,14 +21,18 @@ const Products = ({
 
   return (
     <>
-      {allRamen.map((ramen, idx) => {
-        return <div key={ramen.id ?? idx}>
-          <h3>Name: {ramen.name}</h3>
-          <h3>Price: {ramen.price}</h3>
-          {/* <h3>Picture:</h3> */}
-          <hr></hr>
-        </div>
-      })}
+      {
+        allRamen.map((ramen, idx) => {
+          return (
+            <div key={ramen.id ?? idx}>
+              <h3>Name: {ramen.name}</h3>
+              <p>Price: {ramen.price}</p>
+              {/* <h3>Picture:</h3> */}
+              <hr></hr>
+            </div>
+          )
+        })
+      }
 
       <h2>Ramen with id 2:</h2>
       <h3>Name: {selectedRamen.name} </h3>
