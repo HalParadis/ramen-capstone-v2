@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Route, Link } from 'react-router-dom';
 
 import {
-  Products
+  Products,
+  ProductDetails
 } from './index';
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -39,14 +40,20 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <h1>Hello, World!</h1>
-      <p>API Status: {APIHealth}</p>
+      <Route exact path='/'>
+        <h1>Hello, World!</h1>
+        <p>API Status: {APIHealth}</p>
+      </Route>
 
-      <Route path='/'>
+      <Route exact path='/products'>
         <Products
           allRamen={allRamen}
           fetchRamen={fetchRamen}
         />
+      </Route>
+
+      <Route path='/products/:productId'>
+        <ProductDetails/>
       </Route>
     </div>
   );
