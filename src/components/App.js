@@ -3,7 +3,8 @@ import { Route, Link } from 'react-router-dom';
 
 import {
   Products,
-  ProductDetails
+  ProductDetails,
+  UserForm
 } from './index';
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -12,9 +13,11 @@ import {
 import { getAPIHealth, getAllRamenFromAPI } from '../axios-services';
 import '../style/App.css';
 
+
 const App = () => {
   const [APIHealth, setAPIHealth] = useState('');
   const [allRamen, setAllRamen] = useState([]);
+  const [token, setToken] = useState('')
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
@@ -54,6 +57,13 @@ const App = () => {
 
       <Route path='/products/:productId'>
         <ProductDetails/>
+      </Route>
+
+      <Route path='/users/:actionType'>
+        <UserForm 
+        setToken={setToken}
+        token={token}
+        />
       </Route>
     </div>
   );

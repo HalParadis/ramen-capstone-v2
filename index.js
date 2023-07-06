@@ -14,10 +14,6 @@ server.use(morgan('dev'));
 // handle application/json requests
 server.use(express.json());
 
-// here's our static files
-const path = require('path');
-server.use(express.static(path.join(__dirname, 'build')));
-
 // here's our API
 server.use('/api', require('./api'));
 
@@ -25,6 +21,10 @@ server.use('/api', require('./api'));
 server.use((req, res, next) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+// here's our static files
+const path = require('path');
+server.use(express.static(path.join(__dirname, 'build')));
 
 // bring in the DB connection
 const { client } = require('./db');

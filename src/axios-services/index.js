@@ -38,6 +38,30 @@ export async function getRamenByIdFromAPI(id) {
   }
 }
 
+export async function loginAPI({username, password}) {
+  try {
+    const  { data } = await axios.post(`api/users/login`, {username, password})
+    return data;
+  } catch(error){
+    console.error(err)
+  }
+}
+
+export async function registerAPI({username, password, email, address}) {
+  try {
+    const { data } = await axios.post(`api/users/register`, 
+    {
+      username, 
+      password,
+      email,
+      address
+    })
+    return data;
+  } catch(error){
+    console.error(error)
+  }
+}
+
 export async function getAPIHealth() {
   try {
     const { data } = await axios.get('/api/health');

@@ -17,4 +17,7 @@ apiRouter.get('/health', (req, res, next) => {
 const ramenRouter = require('./ramen');
 apiRouter.use('/ramen', ramenRouter);
 
+const usersRouter = require('./users');
+apiRouter.use('/users', usersRouter);
+
 module.exports = apiRouter;
