@@ -1,3 +1,4 @@
+require("dotenv").config()
 const apiRouter = require('express').Router();
 
 apiRouter.get('/', (req, res, next) => {
@@ -19,5 +20,17 @@ apiRouter.use('/ramen', ramenRouter);
 
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
+
+apiRouter.use("*", (_req, res, next) => {
+  console.log("We entered 404 ")
+  res.status(404);
+  res.send({ message: "Status code 404" });
+});
+
+apiRouter.use((error, req, res, next) => {
+  console.log("We enetered 500 ", error.message)
+  res.status(500);
+  res.send(error.message);
+});
 
 module.exports = apiRouter;
