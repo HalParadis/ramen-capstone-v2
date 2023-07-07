@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 // this file holds your frontend network request adapters
 // think about each function as a service that provides data
@@ -20,10 +20,9 @@ import axios from 'axios';
 
 export async function getAllRamenFromAPI() {
   try {
-    const { data: ramen } = await axios.get('/api/ramen');
+    const { data: ramen } = await axios.get("/api/ramen");
     return ramen;
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
   }
 }
@@ -32,15 +31,41 @@ export async function getRamenByIdFromAPI(id) {
   try {
     const { data: ramen } = await axios.get(`/api/ramen/${id}`);
     return ramen;
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
+  }
+}
+
+export async function loginAPI({ username, password }) {
+  try {
+    const { data } = await axios.post(`/api/users/login`, {
+      username,
+      password
+    });
+    console.log("data: ",data);
+    return data;
+  } catch (error) {
+    console.log("error: ",error);
+  }
+}
+
+export async function registerAPI({ username, password, email, address }) {
+  try {
+    const { data } = await axios.post(`/api/users/register`, {
+      username,
+      password,
+      email,
+      address
+    });
+    return data;
+  } catch (error) {
+    console.error(error);
   }
 }
 
 export async function getAPIHealth() {
   try {
-    const { data } = await axios.get('/api/health');
+    const { data } = await axios.get("/api/health");
     return data;
   } catch (err) {
     console.error(err);

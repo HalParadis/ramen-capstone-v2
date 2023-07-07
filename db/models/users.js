@@ -126,5 +126,9 @@ module.exports = {
   // add your database adapter fns here
   createUser,
   getAllUsers,
-  deleteUser
+  getUserById,
+  getUserByUsername,
+  getUserByUsernameAndPassword,
+  deleteUser,
+  updateUser
 };
