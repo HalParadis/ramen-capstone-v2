@@ -42,10 +42,10 @@ export async function loginAPI({ username, password }) {
       username,
       password
     });
-    console.log("data: ",data);
     return data;
   } catch (error) {
-    console.log("error: ",error);
+    console.error("error: ", error);
+    return error;
   }
 }
 

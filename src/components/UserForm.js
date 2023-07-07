@@ -21,9 +21,22 @@ const UserForm = ({ setToken, token }) => {
     if (actionType === "login") {
       const result = await loginAPI({ username, password });
       console.log(result);
-    } else {
+      if (result.error) {
+        setErrorMessage(result.message);
+      }
+      else {
+        setToken(result.token);
+      }
+    } 
+    else {
       const result = await registerAPI({ username, password, email, password });
       console.log(result);
+      if (result.error) {
+        setErrorMessage(result.message);
+      }
+      else {
+        setToken(result.token);
+      }
     }
     setPassword("");
     setUsername("");
@@ -33,7 +46,7 @@ const UserForm = ({ setToken, token }) => {
 
   useEffect(() => {
     if (token) history.push("/products"); //Change to account page when possible
-  }, []);
+  }, [token]);
 
   return (
     <>

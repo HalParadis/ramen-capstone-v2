@@ -11,7 +11,7 @@ const createRamen = async ({ name, price, description, brand }) => {
       `, [name, price, description, brand]);
     return ramen;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
@@ -23,7 +23,7 @@ const getAllRamen = async () => {
     `);
     return ramen;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
@@ -36,7 +36,7 @@ const getRamenById = async (id) => {
     `, [id]);
     return ramen;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
@@ -49,11 +49,11 @@ const deleteRamen = async (id) => {
         const {rows: [ramen]} = await client.query(`
         DELETE FROM ramen
         WHERE id=${id}
-        RETURNING *
+        RETURNING *;
         `)
         return ramen;
     } catch(error){
-        console.error(error)
+      throw error;
     }
 }
 
@@ -66,11 +66,11 @@ const updateRamen = async ({id, ...fields}) =>{
         UPDATE ramen
         SET ${setString}
         WHERE id=${id}
-        RETURNING *
+        RETURNING *;
         `,Object.values(fields))
         return ramen;
     } catch(error){
-        console.error(error)
+      throw error;
     }
 }
 
