@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getUserByUsername,
+  getUserById,
   createUser,
   getUserByUsernameAndPassword,
 } = require("../db");
@@ -14,7 +15,7 @@ router.post("/register", async (req, res, next) => {
     const { username, password, email, address } = req.body;
     const _user = await getUserByUsername(username);
     if (_user) {
-      res.send({
+      next({
         error: "UserExistError",
         message: `Username ${username} already exists`,
       });
