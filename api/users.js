@@ -55,4 +55,43 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+router.get('/:userId', async (req, res, next) => {  // <------ in progress
+  try {
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } 
+    else {
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId) {
+        const tokenUser = await getUserById(tokenId);
+
+        if (tokenUser.isAdmin || tokenId == userId) {
+          const selectedUser = await getUserById(userId);
+          res.send(selectedUser);
+        }
+        else {
+          next({
+            error: 'UnauthorizedRequestError',
+            message: 'You are not authorized to view this data'
+          })
+        }
+      }
+    }
+  }
+  catch (error) {
+    next(error);
+  }
+})
+
 module.exports = router;

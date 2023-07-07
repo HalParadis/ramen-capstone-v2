@@ -40,6 +40,7 @@ const getUserById = async (id) => {
     FROM users
     WHERE id=${id}
     `);
+    delete user.password;
     return user;
   } catch (error) {
     throw error;
