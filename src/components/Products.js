@@ -14,7 +14,7 @@ const Products = ({
   return (
     <>
       {
-        allRamen.map((ramen, idx) => {
+        allRamen?.map((ramen, idx) => {
           return (
             <div key={ramen.id ?? idx}>
               <h3>Name: {ramen.name}</h3>

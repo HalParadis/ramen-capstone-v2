@@ -2,43 +2,58 @@ import React, { useState, useEffect, } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 
 import {
-  getRamenByIdFromAPI,
-  deleteRamenByIdFromAPI,
-  updateRamenByIdFromAPI
+  getUsersItemsByUserIdAPI,
+  patchUserItemAPI,
+  deleteUserItemAPI,
+  getAllRamenFromAPI
 } from '../axios-services';
 
 const Cart = ({
   token,
   fetchRamen,
-  username
+  fetchRamenById,
+  user
 }) => {
-  const [cartItem, setCartItem] = useState('');
+  const [cartItems, setCartItems] = useState([]);
+  const [userItems, setUserItems] = useState([]);
   const { actionType } = useParams();
   const history = useHistory();
 
-  const fetchCart = async (id) => {
-    const dataRamenById = await getRamenByIdFromAPI(id);
-    setCartItem(dataRamenById);
+
+  const fetchUserItems = async () => {
+    const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
+    setUserItems(dataUsersItems);
+    console.log("datausersItems: ", dataUsersItems);
+  }
+
+  const fetchCartItems = async () => {
+    userItems.forEach( async (userItem) => {
+      const ramen = await fetchRamenById(userItem.ramenId);
+      setCartItems(cartItems.push(ramen));
+    })
   }
 
   const handleDelete = async (event) => {
     event.preventDefault();
-    const result = await deleteRamenByIdFromAPI();
+    const result = await deleteUserItemAPI();
   }
 
 
   useEffect(() => {
-    fetchCart(id);
+    fetchUserItems();
+    fetchCartItems();
   }, []);
 
 
 
   return (
     <>
-      <h2>{username}'s Cart</h2>
+      <h1>NOW VIEWING SHOPPING CART</h1>
+      <h2>{user.name}'s Cart</h2>
 
       {
-        cartItem.map((item, idx) => {
+        userItems &&
+        userItems.map((item, idx) => {
           return (
             <div key={item.id ?? idx}>
               <h3>Name: {item.name}</h3>
@@ -53,7 +68,7 @@ const Cart = ({
             </div>
           )
         })
-      };
+      }
 
       <button
         type="button"
