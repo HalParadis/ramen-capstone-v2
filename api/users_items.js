@@ -7,7 +7,10 @@ const { JWT_SECRET } = process.env;
 const {
   getUsersItemsByUserId,
   updateUserItemCount,
-  deleteUserItem
+  deleteUserItem,
+  getUserById,
+  createUserItem,
+  getUserItemByUserItemId
 } = require('../db/models');
 
 
@@ -16,11 +19,10 @@ router.get('/:userId', async (req, res, next) => {
     const { userId } = req.params;
 
     const prefix = 'Bearer ';
-    const auth = req.header('/Authorization');
+    const auth = req.header('Authorization');
 
     if (!auth) {
       res.status(401);
-      console.log("auth:", auth);
       next({
         error: 'InvalidTokenError',
         message: "You must be logged in to perform this action"
@@ -30,12 +32,12 @@ router.get('/:userId', async (req, res, next) => {
       const { id: tokenId } = jwt.verify(token, JWT_SECRET);
 
       if (tokenId) {
-        const tokenUsersItems = await getUsersItemsByUserId(userId);
-        res.send(tokenUsersItems);
+        const tokenUser = await getUserById(tokenId);
 
-        if (tokenUsersItems.isAdmin || tokenId == userId) {
+        if (tokenUser.isAdmin || tokenId == userId) {
           const selectedUsersItems = await getUsersItemsByUserId(userId);
           res.send(selectedUsersItems);
+
         }
         else {
           next({
@@ -53,9 +55,11 @@ router.get('/:userId', async (req, res, next) => {
 router.patch('/:userItemId', async (req, res, next) => {
   try {
     const { userItemId } = req.params;
+    const { count } = req.body;
 
     const prefix = 'Bearer ';
-    const auth = req.header('/Authorization');
+    const auth = req.header('Authorization');
+
 
     if (!auth) {
       res.status(401);
@@ -84,15 +88,16 @@ router.patch('/:userItemId', async (req, res, next) => {
   }
 });
 
-router.delete('/users_items/:userItemId', async (req, res, next) => {
+router.delete('/:userItemId', async (req, res, next) => {
   try {
     const { userItemId } = req.params;
 
     const prefix = 'Bearer ';
-    const auth = req.header('/Authorization');
+    const auth = req.header('Authorization');
 
     if (!auth) {
       res.status(401);
+      console.log("reached here: 1", auth);
       next({
         error: 'InvalidTokenError',
         message: "You must be logged in to perform this action"
@@ -101,16 +106,19 @@ router.delete('/users_items/:userItemId', async (req, res, next) => {
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length);
       const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+      console.log("userItemId API: ", userItemId);
+      const userItem = await getUserItemByUserItemId({ userItemId });
+      //console.log("userItem: ", userItem);
 
-      if (tokenId) {
-
-        const tokenDeleteUserItem = await deleteUserItem({ id: userItemId});
+      if (tokenId == userItem.userId) {
+        const tokenDeleteUserItem = await deleteUserItem({ id: userItemId });
         res.send(tokenDeleteUserItem);
+        console.log("reached here: 2");
       }
       else {
         next({
           error: 'UnauthorizedRequestError',
-          message: 'You are not authorized to view this data'
+          message: 'You are not authorized to delete this data'
         });
       }
     }
