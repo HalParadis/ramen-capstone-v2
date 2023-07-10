@@ -164,7 +164,7 @@ router.patch('/:userId', async (req, res, next) => {
       else {
         next({
           error: 'UnauthorizedRequestError',
-          message: "You cannot delete someone else's account"
+          message: "You cannot edit someone else's account"
         })
       }
     }
