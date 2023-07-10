@@ -29,19 +29,19 @@ const getUsersItemsByUserId = async (id) => {
   }
 }
 
-const getUsersItemsByRamenId = async (id) => {
-    try {
-      const { rows: usersItems } = await client.query(`
-        SELECT * 
-        FROM users_items
-        WHERE "ramenId"=$1
-      `, [id]);
-      return usersItems;
+// const getUsersItemsByRamenId = async (id) => {
+//     try {
+//       const { rows: usersItems } = await client.query(`
+//         SELECT * 
+//         FROM users_items
+//         WHERE "ramenId"=$1
+//       `, [id]);
+//       return usersItems;
   
-    } catch (error) {
-      console.error(error);
-    }
-  }
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }
 
 //userId, ramenId, count
 const updateUserItemCount = async ({ id, count }) => {
@@ -78,7 +78,7 @@ const deleteUserItem = async (id) => {
 module.exports = {
   createUserItem,
   getUsersItemsByUserId,
-  getUsersItemsByRamenId,
+  //getUsersItemsByRamenId,
   updateUserItemCount,
   deleteUserItem
 }

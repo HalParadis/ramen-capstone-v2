@@ -65,6 +65,13 @@ const App = () => {
         token={token}
         />
       </Route>
+
+      <Route path='/users_items/:actionType'>
+        <Cart
+        token={token}
+        username={username}
+        />
+      </Route>
     </div>
   );
 };

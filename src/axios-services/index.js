@@ -36,6 +36,28 @@ export async function getRamenByIdFromAPI(id) {
   }
 }
 
+export async function updateRamenByIdFromAPI(userItemId) {
+  try {
+    const { data: updateCount } = await axios.patch(`/api/users_items/${userItemId}`, {
+      count
+    });
+    return updateCount;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function deleteRamenByIdFromAPI(userItemId) {
+  try {
+    const { data: deleteData } = await axios.delete(`/api/users_items/${userItemId}`);
+    return deleteData;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+
 export async function loginAPI({ username, password }) {
   try {
     const { data } = await axios.post(`/api/users/login`, {
