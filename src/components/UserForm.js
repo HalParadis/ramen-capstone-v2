@@ -30,7 +30,7 @@ const UserForm = ({ setToken, token, setUser }) => {
       }
     } 
     else {
-      const result = await registerAPI({ username, password, email, password });
+      const result = await registerAPI({ username, password, email, address });
       console.log(result);
       if (result.error) {
         setErrorMessage(result.message);
