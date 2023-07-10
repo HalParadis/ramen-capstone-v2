@@ -84,7 +84,6 @@ export async function getUserByIdAPI({userId, token}) {
 
 export async function patchUserAPI({userId, token, ...bodyData}) {
   try {
-    console.log('patch token', token);
     const { data } = await axios.patch(
       `/api/users/${userId}`, 
       {...bodyData},
@@ -92,6 +91,21 @@ export async function patchUserAPI({userId, token, ...bodyData}) {
     );
     console.log(data);
     return data;
+  }
+  catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function deleteUserAPI({userId, token}) {
+  try { 
+    const { data } = await axios.delete(
+      `/api/users/${userId}`, 
+      {headers: { Authorization: `Bearer ${token}` }}
+    );
+    console.log('data:', data);
+    return data;  
   }
   catch (error) {
     console.error(error?.response?.data);

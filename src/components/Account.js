@@ -3,7 +3,7 @@ import {
   useHistory,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { getUserByIdAPI, patchUserAPI } from "../axios-services";
+import { deleteUserAPI, getUserByIdAPI, patchUserAPI } from "../axios-services";
 
 const Account = ({ setToken, token, user, setUser }) => {
   const userId = user.id;
@@ -14,6 +14,7 @@ const Account = ({ setToken, token, user, setUser }) => {
   const [email, setEmail] = useState(user.email);
   const [address, setAddress] = useState(user.address);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   const fetchUser = async () => {
     const result = await getUserByIdAPI({ userId, token });
@@ -42,16 +43,23 @@ const Account = ({ setToken, token, user, setUser }) => {
     }
   }
 
+  const deleteUser = async () => {
+    const result = await deleteUserAPI({userId, token});
+    if (result.error) {
+      setErrorMessage(result.message);
+    }
+    else {
+      setToken('');
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // setErrorMessage(null);
-    let result = await patchUser();
-    // setErrorMessage(result)
+    await patchUser();
     await fetchUser();
   }
 
   useEffect(() => {
-    console.log('token', token);
     if (!token) {
       history.push("/users/login");
     }
@@ -108,15 +116,34 @@ const Account = ({ setToken, token, user, setUser }) => {
             </form>
 
           : <div>
-            <h3>Username: {user.username}</h3>
-            <h3>Email: {user.email}</h3>
-            <h3>Address: {user.address ?? 'N/A'}</h3>
+              <h3>Username: {user.username}</h3>
+              <h3>Email: {user.email}</h3>
+              <h3>Address: {user.address ?? 'N/A'}</h3>
 
-            <button
-              type='button'
-              onClick={() => setToken('')}
-            >Log Out</button>
-          </div>
+              <button
+                type='button'
+                onClick={() => setToken('')}
+              >Log Out</button>
+
+              {
+                isDeleteMode
+                  ? <div>
+                      Are You Sure? This will permanently delete your account.
+                      <button
+                        type='button'
+                        onClick={() => setIsDeleteMode(false)}
+                      >Cancel</button>
+                      <button
+                        type='button'
+                        onClick={deleteUser}
+                      >Delete</button>
+                    </div>
+                  : <button
+                      type='button'
+                      onClick={() => setIsDeleteMode(true)}
+                    >Delete Account</button>
+              } 
+            </div>
       }
     </>
   )
