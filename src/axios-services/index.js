@@ -145,7 +145,6 @@ export async function deleteUserItemAPI({userItemId, token}) {
       `/api/users_items/${userItemId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
-      console.log("deleteData: ", deleteData);
     return deleteData;
   } catch (error) {
     console.error(error?.response?.data);

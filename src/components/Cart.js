@@ -1,5 +1,5 @@
 import React, { useState, useEffect, } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import {
   getUsersItemsByUserIdAPI,
@@ -15,45 +15,49 @@ const Cart = ({
   user
 }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [userItems, setUserItems] = useState([]);
-  const { actionType } = useParams();
   const history = useHistory();
 
-
-  const fetchUserItems = async () => {
-    const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
-    setUserItems(dataUsersItems);
-    console.log("datausersItems: ", dataUsersItems);
-  }
-
   const fetchCartItems = async () => {
-    userItems.forEach( async (userItem) => {
+    const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
+    const newCartItems = [];
+
+    dataUsersItems.forEach(async (userItem) => {
       const ramen = await fetchRamenById(userItem.ramenId);
-      setCartItems(cartItems.push(ramen));
-    })
+      ramen.count = userItem.count;
+      newCartItems.push(ramen);
+    });
+
+    setCartItems(newCartItems);
   }
 
-  const handleDelete = async (event) => {
-    event.preventDefault();
-    const result = await deleteUserItemAPI();
+  const handleDelete = async (itemId) => {
+    const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
+    const { id } = dataUsersItems.find(userItem => userItem.ramenId == itemId);
+    const deletedUserItem = await deleteUserItemAPI({userItemId: id, token});
+    console.log('deletedUserItem', deletedUserItem);
+    await fetchCartItems();
   }
 
 
   useEffect(() => {
-    fetchUserItems();
-    fetchCartItems();
-  }, []);
+    if (!token) {
+      history.push("/users/login");
+    }
+    else {
+      fetchCartItems();
+    }
+  }, [token])
 
 
 
   return (
     <>
       <h1>NOW VIEWING SHOPPING CART</h1>
-      <h2>{user.name}'s Cart</h2>
+      <h2>{user.username}'s Cart</h2>
 
       {
-        userItems &&
-        userItems.map((item, idx) => {
+        cartItems &&
+        cartItems.map((item, idx) => {
           return (
             <div key={item.id ?? idx}>
               <h3>Name: {item.name}</h3>
@@ -63,7 +67,7 @@ const Cart = ({
 
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={() => handleDelete(item.id)}
               >Delete</button>
             </div>
           )

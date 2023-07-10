@@ -36,6 +36,7 @@ const App = () => {
   const fetchRamenById = async (id) => {
     const selectedRamen = await getRamenByIdFromAPI(id);
     setSelectedRamen(selectedRamen)
+    return selectedRamen;
   }
 
   useEffect(() => {
