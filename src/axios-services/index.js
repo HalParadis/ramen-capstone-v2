@@ -69,14 +69,43 @@ export async function registerAPI({ username, password, email, address }) {
 }
 
 export async function getUserByIdAPI({userId, token}) {
-  console.log('entered getUserByIdAPI');
   try {
     const { data } = await axios.get(
       `/api/users/${userId}`, 
       {headers: { Authorization: `Bearer ${token}` }}
     );
-    console.log('data', data)
     return data;
+  }
+  catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function patchUserAPI({userId, token, ...bodyData}) {
+  try {
+    const { data } = await axios.patch(
+      `/api/users/${userId}`, 
+      {...bodyData},
+      {headers: { Authorization: `Bearer ${token}` }}
+    );
+    console.log(data);
+    return data;
+  }
+  catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function deleteUserAPI({userId, token}) {
+  try { 
+    const { data } = await axios.delete(
+      `/api/users/${userId}`, 
+      {headers: { Authorization: `Bearer ${token}` }}
+    );
+    console.log('data:', data);
+    return data;  
   }
   catch (error) {
     console.error(error?.response?.data);

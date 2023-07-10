@@ -5,6 +5,7 @@ const {
   createUser,
   deleteUser,
   getUserByUsernameAndPassword,
+  updateUser,
 } = require("../db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
@@ -100,6 +101,7 @@ router.get('/:userId', async (req, res, next) => {
 
 router.delete('/:userId', async (req, res, next) => { 
   try {
+    console.log('entered delete user API');
     const { userId } = req.params;
 
     const prefix = 'Bearer ';
@@ -131,6 +133,46 @@ router.delete('/:userId', async (req, res, next) => {
   catch (error) {
     next(error);
   }
-})
+});
+
+
+router.patch('/:userId', async (req, res, next) => { 
+  try {
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+    const data = req.body;
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } 
+    else {
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId == userId) {
+        const updatedUser = await updateUser({
+          id: userId,
+          ...data
+        });
+        res.send(updatedUser);
+      }
+      else {
+        next({
+          error: 'UnauthorizedRequestError',
+          message: "You cannot edit someone else's account"
+        })
+      }
+    }
+  }
+  catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

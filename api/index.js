@@ -28,7 +28,7 @@ apiRouter.use("*", (_req, res, next) => {
 });
 
 apiRouter.use((error, req, res, next) => {
-  console.log("We enetered 500 ", error.message)
+  console.log("We enetered 500 ", error)
   res.status(500);
   res.send(error);
 });
