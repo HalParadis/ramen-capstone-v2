@@ -93,12 +93,12 @@ const App = () => {
         />
       </Route>
 
-      {/* <Route path='/users_items/:actionType'>
+      <Route path='/users_items/:actionType'>
         <Cart
         token={token}
         username={username}
         />
-      </Route> */}
+      </Route>
     </div>
   );
 };
