@@ -16,8 +16,8 @@ const createUser = async ({username, password, email, address}) => {
     user && delete user.password;
     return user;
   }
-  catch (err) {
-    console.error(err);
+  catch (error) {
+    throw error;
   }
 };
 
@@ -29,7 +29,7 @@ const getAllUsers = async () => {
     `);
     return users;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -40,9 +40,10 @@ const getUserById = async (id) => {
     FROM users
     WHERE id=${id}
     `);
+    delete user.password;
     return user;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -55,14 +56,17 @@ const getUserByUsername = async (username) => {
     `, [username]);
     return user;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
 const getUserByUsernameAndPassword = async ({ username, password }) => {
   const user = await getUserByUsername(username);
   if (!user) {
-    throw new Error("User not found");
+    throw {
+      error: 'UnknownUserError',
+      message: 'User not found'
+    }
   }
   const hashedPassword = user.password;
   const passwordsMatch = await bcrypt.compare(password, hashedPassword);
@@ -71,7 +75,10 @@ const getUserByUsernameAndPassword = async ({ username, password }) => {
     delete user.password;
     return user;
   } else {
-    throw new Error("Password is Incorrect");
+    throw {
+      error: 'IncorrectPasswordError',
+      message: 'Incorrect Password'
+    };
   }
 };
 
@@ -101,7 +108,7 @@ const updateUser = async ({ id, ...fields }) => {
      console.log(user.password)
     return user;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -118,7 +125,7 @@ const deleteUser = async (id) => {
   `);
   return user;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 

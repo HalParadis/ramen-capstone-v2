@@ -22,8 +22,9 @@ export async function getAllRamenFromAPI() {
   try {
     const { data: ramen } = await axios.get("/api/ramen");
     return ramen;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
   }
 }
 
@@ -31,8 +32,9 @@ export async function getRamenByIdFromAPI(id) {
   try {
     const { data: ramen } = await axios.get(`/api/ramen/${id}`);
     return ramen;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
   }
 }
 
@@ -64,12 +66,14 @@ export async function loginAPI({ username, password }) {
       username,
       password
     });
-    console.log("data: ",data);
     return data;
   } catch (error) {
-    console.log("error: ",error);
+    console.error(error?.response?.data);
+    return error?.response?.data;
   }
 }
+
+
 
 export async function registerAPI({ username, password, email, address }) {
   try {
@@ -81,7 +85,24 @@ export async function registerAPI({ username, password, email, address }) {
     });
     return data;
   } catch (error) {
-    console.error(error);
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function getUserByIdAPI({userId, token}) {
+  console.log('entered getUserByIdAPI');
+  try {
+    const { data } = await axios.get(
+      `/api/users/${userId}`, 
+      {headers: { Authorization: `Bearer ${token}` }}
+    );
+    console.log('data', data)
+    return data;
+  }
+  catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
   }
 }
 

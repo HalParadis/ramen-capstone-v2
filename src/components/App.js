@@ -4,7 +4,8 @@ import { Route, Link } from 'react-router-dom';
 import {
   Products,
   ProductDetails,
-  UserForm
+  UserForm,
+  Account
 } from './index';
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -17,7 +18,8 @@ import '../style/App.css';
 const App = () => {
   const [APIHealth, setAPIHealth] = useState('');
   const [allRamen, setAllRamen] = useState([]);
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState('');
+  const [user, setUser] = useState({});
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
@@ -42,7 +44,21 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app-container">
+    <div className='app-container'>
+
+      <header className='app-header'>
+        <h1>We Love Ramen!</h1>
+
+        <div className='header-links'>
+          <Link to='/products'>Ramen</Link>
+          {
+            token 
+              ? <Link to='/account'>Account</Link>
+              : <Link to='/users/login'>Login</Link>
+          }
+        </div>
+      </header>
+
       <Route exact path='/'>
         <h1>Hello, World!</h1>
         <p>API Status: {APIHealth}</p>
@@ -61,8 +77,18 @@ const App = () => {
 
       <Route path='/users/:actionType'>
         <UserForm 
-        setToken={setToken}
-        token={token}
+          setUser={setUser}
+          setToken={setToken}
+          token={token}
+        />
+      </Route>
+
+      <Route path='/account'>
+        <Account 
+          setToken={setToken}
+          token={token}
+          setUser={setUser}
+          user={user}
         />
       </Route>
 

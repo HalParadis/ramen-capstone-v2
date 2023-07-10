@@ -11,7 +11,7 @@ const createUserItem = async ({ userId, ramenId, count }) => {
     return userItem;
 
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
@@ -25,7 +25,7 @@ const getUsersItemsByUserId = async (id) => {
     return usersItems;
 
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
@@ -55,7 +55,7 @@ const updateUserItemCount = async ({ id, count }) => {
     return userItem;
 
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
@@ -71,7 +71,7 @@ const deleteUserItem = async (id) => {
     return userItem;
 
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 

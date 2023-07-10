@@ -1,7 +1,9 @@
 const express = require("express");
 const {
   getUserByUsername,
+  getUserById,
   createUser,
+  deleteUser,
   getUserByUsernameAndPassword,
 } = require("../db");
 const router = express.Router();
@@ -14,7 +16,7 @@ router.post("/register", async (req, res, next) => {
     const { username, password, email, address } = req.body;
     const _user = await getUserByUsername(username);
     if (_user) {
-      res.send({
+      next({
         error: "UserExistError",
         message: `Username ${username} already exists`,
       });
@@ -33,6 +35,7 @@ router.post("/register", async (req, res, next) => {
     next(error);
   }
 });
+
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -53,5 +56,81 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+
+router.get('/:userId', async (req, res, next) => {  
+  try {
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } 
+    else {
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId) {
+        const tokenUser = await getUserById(tokenId);
+
+        if (tokenUser.isAdmin || tokenId == userId) {
+          const selectedUser = await getUserById(userId);
+          res.send(selectedUser);
+        }
+        else {
+          next({
+            error: 'UnauthorizedRequestError',
+            message: 'You are not authorized to view this data'
+          })
+        }
+      }
+    }
+  }
+  catch (error) {
+    next(error);
+  }
+});
+
+
+router.delete('/:userId', async (req, res, next) => { 
+  try {
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } 
+    else {
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId == userId) {
+        const deletedUser = await deleteUser(userId);
+        res.send(deletedUser);
+      }
+      else {
+        next({
+          error: 'UnauthorizedRequestError',
+          message: "You cannot delete someone else's account"
+        })
+      }
+    }
+  }
+  catch (error) {
+    next(error);
+  }
+})
 
 module.exports = router;
