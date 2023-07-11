@@ -29,6 +29,21 @@ const getUsersItemsByUserId = async (id) => {
   }
 }
 
+const getUserItemByUserItemId = async ({ userItemId }) => {
+  console.log("userItemId DB: ", userItemId);
+  try {
+    const { rows: [userItem] } = await client.query(`
+      SELECT * 
+      FROM users_items
+      WHERE id=$1
+    `, [userItemId]);
+    return userItem;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
 const getUsersItemsByRamenId = async (id) => {
     try {
       const { rows: usersItems } = await client.query(`
@@ -39,11 +54,11 @@ const getUsersItemsByRamenId = async (id) => {
       return usersItems;
   
     } catch (error) {
-      throw error;
+      console.error(error);
     }
   }
 
-//userId, ramenId, count
+
 const updateUserItemCount = async ({ id, count }) => {
   try {
     const { rows: [userItem] } = await client.query(`
@@ -59,7 +74,7 @@ const updateUserItemCount = async ({ id, count }) => {
   }
 }
 
-const deleteUserItem = async (id) => {
+const deleteUserItem = async ({ id }) => {
   try {
     const { rows: [userItem]} = await client.query(`
       DELETE FROM
@@ -79,6 +94,7 @@ module.exports = {
   createUserItem,
   getUsersItemsByUserId,
   getUsersItemsByRamenId,
+  getUserItemByUserItemId,
   updateUserItemCount,
   deleteUserItem
 }

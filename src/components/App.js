@@ -9,6 +9,8 @@ import {
   ProductsAdmin,
   UsersAdmin,
   AdminCreateProduct,
+  Account,
+  Cart
 } from "./index";
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -18,22 +20,25 @@ import {
   getAPIHealth,
   getAllRamenFromAPI,
   getAllUsersFromAPI,
+  getRamenByIdFromAPI,
   updateRamenFromAPI,
 } from "../axios-services";
+
 import "../style/App.css";
 import AdminProductDetails from "./AdminProductDetails";
 
 const App = () => {
   const [APIHealth, setAPIHealth] = useState("");
   const [allRamen, setAllRamen] = useState([]);
+  const [selectedRamen, setSelectedRamen] = useState(undefined);
   const [token, setToken] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-  const [selectedRamen, setSelectedRamen] = useState(undefined);
+  const [user, setUser] = useState({});
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
     setAllRamen(ramen);
-  };
+  }
   const fetchUsers = async () => {
     const users = await getAllUsersFromAPI();
     setAllUsers(users);
@@ -58,13 +63,37 @@ const App = () => {
     // invoke it immediately after its declaration, inside the useEffect callback
     getAPIStatus();
 
+    
     fetchRamen();
     fetchUsers();
   }, []);
 
   return (
-    <div className="app-container">
-      <Route exact path="/">
+    <div className='app-container'>
+
+      <header className='app-header'>
+        <h1>We Love Ramen!</h1>
+
+        <div className='header-links'>
+          {user.isAdmin 
+          ? <>
+          <Link to='/admin/products'>Ramen</Link>
+          <Link to='/admin/users'>Users</Link>
+          <Link to='/account'>Account</Link> 
+          </> :<>
+          <Link to='/products'>Ramen</Link> |
+          {
+            token
+              ? <>
+                <Link to='/account'>Account</Link> |
+                <Link to='/cart'>Shopping Cart</Link>
+                </>
+              : <Link to='/users/login'>Login</Link>
+          }</>}
+        </div>
+      </header>
+
+      <Route exact path='/'>
         <h1>Hello, World!</h1>
         <p>API Status: {APIHealth}</p>
       </Route>
@@ -74,28 +103,45 @@ const App = () => {
       </Route>
 
       <Route exact path="/products/:productId">
-        <ProductDetails />
+        <ProductDetails 
+          selectedRamen={selectedRamen}
+          fetchRamenById={fetchRamenById}
+          token={token}/>
       </Route>
 
       <Route path="/users/:actionType">
-        <UserForm setToken={setToken} token={token} />
+        <UserForm setToken={setToken} token={token} setUser={setUser}/>
       </Route>
 
-      <Route exact path="/admin">
-        <AdminPage
-          allRamen={allRamen}
-          fetchRamen={fetchRamen}
-          allUsers={allUsers}
-          fetchUsers={fetchUsers}
+      <Route path='/account'>
+        <Account
+          setToken={setToken}
+          token={token}
+          setUser={setUser}
+          user={user}
         />
       </Route>
+
+      <Route path='/cart'>
+        <Cart
+          token={token}
+          user={user}
+          fetchRamenById={fetchRamenById}
+        />
+      </Route>
+
+
 
       <Route exact path="/admin/products">
         <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
       </Route>
 
       <Route path="/admin/users">
-        <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} />
+        <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} 
+          selectedRamen={selectedRamen}
+          fetchRamenById={fetchRamenById}
+          token={token}
+        />
       </Route>
 
       <Route exact path="/admin/products/:productId">
@@ -108,7 +154,6 @@ const App = () => {
           setAllRamen={setAllRamen}
         />
       </Route>
-
       <Route exact path="/admin/create">
         <AdminCreateProduct token={token} fetchRamen={fetchRamen}/>
       </Route>

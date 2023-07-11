@@ -7,3 +7,5 @@ export { default as ProductsAdmin } from "./ProductsAdmin";
 export { default as UsersAdmin } from "./UsersAdmin";
 export { default as AdminProductsDetails } from "./AdminProductDetails";
 export { default as AdminCreateProduct } from "./AdminCreateProduct";
+export { default as Cart } from './Cart';
+export { default as Account } from './Account';

@@ -27,6 +27,7 @@ const AdminProductDetails = ({token, fetchRamen}) => {
   }
 
 const handleDelete = async (productId) => {
+  console.log(productId)
  const deleteRam = await deleteRamenFromAPI({id: productId, token})
  await fetchRamen()
  history.push('/admin/products')
