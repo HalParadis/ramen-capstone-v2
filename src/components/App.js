@@ -10,7 +10,8 @@ import {
   UsersAdmin,
   AdminCreateProduct,
   Account,
-  Cart
+  Cart,
+  Checkout
 } from "./index";
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -132,7 +133,13 @@ const App = () => {
         />
       </Route>
 
-
+      <Route path='/checkout'>
+        <Checkout 
+          token={token}
+          fetchRamenById={fetchRamenById}
+          user={user}
+        />
+      </Route>
 
       <Route exact path="/admin/products">
         <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
