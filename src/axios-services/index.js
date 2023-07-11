@@ -152,6 +152,20 @@ export async function deleteUserItemAPI({userItemId, token}) {
   }
 }
 
+export async function postUserItemAPI({ramenId, count, token}) {
+  try {
+    const { data: newUserItem } = await axios.post(
+      `/api/users_items/${ramenId}`,
+      { count },
+      {headers: { Authorization: `Bearer ${token}` }}
+      );
+    return newUserItem;
+  } catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
 export async function getAPIHealth() {
   try {
     const { data } = await axios.get("/api/health");
