@@ -4,6 +4,7 @@ const {
   getUserById,
   createUser,
   getUserByUsernameAndPassword,
+  getAllUsers,
 } = require("../db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
@@ -50,6 +51,35 @@ router.post("/login", async (req, res, next) => {
       );
       res.send({ user, token });
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/", async (req, res, next ) =>{
+  try {
+    const users = await getAllUsers()
+    res.send(users)
+  } catch(error){
+    console.error(error)
+  }
+})
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params; 
+
+    if (id) {
+      const user = await getUserById(id);
+      res.send(user);
+    } 
+    else {
+      next({
+        name: 'NoUserIdError',
+        message: `No user exist with id ${id}`
+      });
+    }
+    
   } catch (error) {
     next(error);
   }
