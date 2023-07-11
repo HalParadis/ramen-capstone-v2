@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getRamenByIdFromAPI } from '../axios-services';
+import { postUserItemAPI } from '../axios-services';
 import { useParams, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const ProductDetails = ({ 
   selectedRamen,
-  fetchRamenById
+  fetchRamenById,
+  token
 }) => {
   const params = useParams();
   const history = useHistory();
@@ -22,7 +23,10 @@ const ProductDetails = ({
       <p>Description: {selectedRamen && selectedRamen.description} </p>
       <button
         type='button'
-        onClick={() => history.push('/cart')}
+        onClick={() => {
+          postUserItemAPI({count: 1, token, ramenId: selectedRamen.id})
+          history.push('/cart');
+        }}
       >Add To Cart</button>
     </div>
   )

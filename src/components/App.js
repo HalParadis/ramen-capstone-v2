@@ -91,6 +91,7 @@ const App = () => {
         <ProductDetails
           selectedRamen={selectedRamen}
           fetchRamenById={fetchRamenById}
+          token={token}
         />
       </Route>
 

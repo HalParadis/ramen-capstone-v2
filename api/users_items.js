@@ -14,6 +14,41 @@ const {
 } = require('../db/models');
 
 
+router.post('/:ramenId', async (req, res, next) => {
+  try {
+    const { ramenId } = req.params;
+    const { count } = req.body;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } else if (auth.startsWith(prefix)) {
+      const token = auth.slice(prefix.length);
+      const { id: userId } = jwt.verify(token, JWT_SECRET);
+
+      if (userId) {
+        const newUserItem = await createUserItem({userId, ramenId, count});
+        res.send(newUserItem);
+        }
+        else {
+          next({
+            error: 'UnauthorizedRequestError',
+            message: 'You are not authorized to view this data'
+          });
+        }
+      }
+    }
+    catch (error) {
+      next(error);
+  }
+});
+
 router.get('/:userId', async (req, res, next) => {
   try {
     const { userId } = req.params;
