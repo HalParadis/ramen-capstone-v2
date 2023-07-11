@@ -3,6 +3,7 @@ import {
   useHistory,
   useParams,
   Link,
+  Route,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { loginAPI, registerAPI } from "../axios-services";
 
@@ -21,6 +22,9 @@ const UserForm = ({ setToken, token, setUser }) => {
     if (actionType === "login") {
       const result = await loginAPI({ username, password });
       console.log(result);
+      if(result.user.isAdmin===true){
+        history.push("/admin")
+      }
       if (result.error) {
         setErrorMessage(result.message);
       }

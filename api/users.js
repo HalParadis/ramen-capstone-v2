@@ -5,6 +5,7 @@ const {
   createUser,
   deleteUser,
   getUserByUsernameAndPassword,
+  getAllUsers,
   updateUser,
 } = require("../db");
 const router = express.Router();
@@ -57,6 +58,15 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+router.get("/", async (req, res, next ) =>{
+  try {
+    const users = await getAllUsers()
+    res.send(users)
+  } catch(error){
+    console.error(error)
+  }
+})
 
 
 router.get('/:userId', async (req, res, next) => {  

@@ -1,6 +1,11 @@
-export { default as App } from './App';
-export { default as Products } from './Products';
-export { default as ProductDetails } from './ProductDetails';
-export { default as UserForm } from './UserForm';
+export { default as App } from "./App";
+export { default as Products } from "./Products";
+export { default as ProductDetails } from "./ProductDetails";
+export { default as UserForm } from "./UserForm";
+export { default as AdminPage } from "./admin";
+export { default as ProductsAdmin } from "./ProductsAdmin";
+export { default as UsersAdmin } from "./UsersAdmin";
+export { default as AdminProductsDetails } from "./AdminProductDetails";
+export { default as AdminCreateProduct } from "./AdminCreateProduct";
 export { default as Cart } from './Cart';
 export { default as Account } from './Account';

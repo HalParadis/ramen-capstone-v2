@@ -3,16 +3,16 @@ const client = require('../client');
 const bcrypt = require('bcrypt')
 const { getUsersItemsByUserId, deleteUserItem } = require('./users_items')
 
-const createUser = async ({ username, password, email, address }) => {
-  const SALT_COUNT = 5;
-  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+const createUser = async ({username, password, email, address, isAdmin}) => {
+      const SALT_COUNT = 5;
+      const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   try {
-    const { rows: [user] } = await client.query(`
-      INSERT INTO users (username, password, email, address)
-      VALUES ($1, $2, $3, $4)
+    const {rows: [user]} = await client.query(`
+      INSERT INTO users (username, password, email, address, "isAdmin")
+      VALUES ($1, $2, $3, $4, $5)
       ON CONFLICT DO NOTHING
       RETURNING *;
-    `, [username, hashedPassword, email, address]);
+    `, [username, hashedPassword, email, address, isAdmin]);
     user && delete user.password;
     return user;
   }

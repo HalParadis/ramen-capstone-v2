@@ -88,6 +88,13 @@ async function populateInitialData() {
       email: "john@email.com",
     });
 
+    await createUser({
+      username:"Admin",
+      password:"AdminPassword",
+      email:"adminsemail@email.com",
+      isAdmin: "true"
+    })
+
     console.log("Success creating users!");
 
     // const { rows: users } = await client.query(`
