@@ -29,19 +29,34 @@ const getUsersItemsByUserId = async (id) => {
   }
 }
 
-const getUsersItemsByRamenId = async (id) => {
-    try {
-      const { rows: usersItems } = await client.query(`
-        SELECT * 
-        FROM users_items
-        WHERE "ramenId"=$1
-      `, [id]);
-      return usersItems;
-  
-    } catch (error) {
-      throw error;
-    }
+const getUserItemByUserItemId = async ({ userItemId }) => {
+  console.log("userItemId DB: ", userItemId);
+  try {
+    const { rows: [userItem] } = await client.query(`
+      SELECT * 
+      FROM users_items
+      WHERE id=$1
+    `, [userItemId]);
+    return userItem;
+
+  } catch (error) {
+    throw error;
   }
+}
+
+// const getUsersItemsByRamenId = async (id) => {
+//     try {
+//       const { rows: usersItems } = await client.query(`
+//         SELECT * 
+//         FROM users_items
+//         WHERE "ramenId"=$1
+//       `, [id]);
+//       return usersItems;
+  
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }
 
 //userId, ramenId, count
 const updateUserItemCount = async ({ id, count }) => {
@@ -59,7 +74,7 @@ const updateUserItemCount = async ({ id, count }) => {
   }
 }
 
-const deleteUserItem = async (id) => {
+const deleteUserItem = async ({ id }) => {
   try {
     const { rows: [userItem]} = await client.query(`
       DELETE FROM
@@ -78,7 +93,8 @@ const deleteUserItem = async (id) => {
 module.exports = {
   createUserItem,
   getUsersItemsByUserId,
-  getUsersItemsByRamenId,
+  //getUsersItemsByRamenId,
+  getUserItemByUserItemId,
   updateUserItemCount,
   deleteUserItem
 }

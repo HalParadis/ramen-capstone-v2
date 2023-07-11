@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getRamenByIdFromAPI } from '../axios-services';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useParams, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
-const ProductDetails = () => {
+const ProductDetails = ({ 
+  selectedRamen,
+  fetchRamenById
+}) => {
   const params = useParams();
+  const history = useHistory();
   const { productId } = params;
-  const [ramen, setRamen] = useState(undefined);
-
-  const fetchRamenById = async (id) => {
-    const selectedRamen = await getRamenByIdFromAPI(id);
-    setRamen(selectedRamen)
-  }
 
   useEffect(() => {
     fetchRamenById(productId);
@@ -18,12 +16,13 @@ const ProductDetails = () => {
 
   return (
     <div>
-      <h2>Name: {ramen && ramen.name} </h2>
-      <h3>Price: {ramen && ramen.price} </h3>
-      <h3>Brand: {ramen && ramen.brand} </h3>
-      <p>Description: {ramen && ramen.description} </p>
+      <h2>Name: {selectedRamen && selectedRamen.name} </h2>
+      <h3>Price: {selectedRamen && selectedRamen.price} </h3>
+      <h3>Brand: {selectedRamen && selectedRamen.brand} </h3>
+      <p>Description: {selectedRamen && selectedRamen.description} </p>
       <button
         type='button'
+        onClick={() => history.push('/cart')}
       >Add To Cart</button>
     </div>
   )

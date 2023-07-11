@@ -51,8 +51,6 @@ export async function loginAPI({ username, password }) {
   }
 }
 
-
-
 export async function registerAPI({ username, password, email, address }) {
   try {
     const { data } = await axios.post(`/api/users/register`, {
@@ -108,6 +106,47 @@ export async function deleteUserAPI({userId, token}) {
     return data;  
   }
   catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function getUsersItemsByUserIdAPI({userId, token}) {
+  try {
+    const { data: usersItems } = await axios.get(
+      `/api/users_items/${userId}`,
+      {headers: { Authorization: `Bearer ${token}` }}
+      );
+    return usersItems;
+  } catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function patchUserItemAPI({userItemId, token, ...bodyData}) {
+  try {
+    const { data: updateCount } = await axios.patch(
+      `/api/users_items/${userItemId}`, 
+      {...bodyData},
+      {headers: { Authorization: `Bearer ${token}` }}
+      );
+      console.log("updateCount: ", updateCount);
+    return updateCount;
+  } catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function deleteUserItemAPI({userItemId, token}) {
+  try {
+    const { data: deleteData } = await axios.delete(
+      `/api/users_items/${userItemId}`,
+      {headers: { Authorization: `Bearer ${token}` }}
+      );
+    return deleteData;
+  } catch (error) {
     console.error(error?.response?.data);
     return error?.response?.data;
   }
