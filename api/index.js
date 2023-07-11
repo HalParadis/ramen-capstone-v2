@@ -54,6 +54,9 @@ apiRouter.use('/ramen', ramenRouter);
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
 
+const usersItemsRouter = require('./users_items');
+apiRouter.use('/users_items', usersItemsRouter);
+
 apiRouter.use("*", (_req, res, next) => {
   console.log("We entered 404 ")
   res.status(404);
@@ -61,7 +64,7 @@ apiRouter.use("*", (_req, res, next) => {
 });
 
 apiRouter.use((error, req, res, next) => {
-  console.log("We enetered 500 ", error.message)
+  console.log("We entered 500 ", error)
   res.status(500);
   res.send(error);
 });

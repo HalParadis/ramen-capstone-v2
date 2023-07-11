@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useHistory,
   useParams,
@@ -7,7 +7,7 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import { loginAPI, registerAPI } from "../axios-services";
 
-const UserForm = ({ setToken, token }) => {
+const UserForm = ({ setToken, token, setUser }) => {
   const { actionType } = useParams();
   const history = useHistory();
   const [username, setUsername] = useState("");
@@ -30,16 +30,18 @@ const UserForm = ({ setToken, token }) => {
       }
       else {
         setToken(result.token);
+        setUser(result.user);
       }
     } 
     else {
-      const result = await registerAPI({ username, password, email, password });
+      const result = await registerAPI({ username, password, email, address });
       console.log(result);
       if (result.error) {
         setErrorMessage(result.message);
       }
       else {
         setToken(result.token);
+        setUser(result.user);
       }
     }
     setPassword("");
@@ -49,7 +51,7 @@ const UserForm = ({ setToken, token }) => {
   };
 
   useEffect(() => {
-    if (token ) history.push("/products"); //Change to account page when possible
+    if (token) history.push("/account"); //Change to account page when possible
   }, [token]);
 
   return (

@@ -3,8 +3,10 @@ const {
   getUserByUsername,
   getUserById,
   createUser,
+  deleteUser,
   getUserByUsernameAndPassword,
   getAllUsers,
+  updateUser,
 } = require("../db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
@@ -36,6 +38,7 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+
 router.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -65,22 +68,119 @@ router.get("/", async (req, res, next ) =>{
   }
 })
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params; 
 
-    if (id) {
-      const user = await getUserById(id);
-      res.send(user);
+router.get('/:userId', async (req, res, next) => {  
+  try {
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
     } 
     else {
-      next({
-        name: 'NoUserIdError',
-        message: `No user exist with id ${id}`
-      });
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId) {
+        const tokenUser = await getUserById(tokenId);
+
+        if (tokenUser.isAdmin || tokenId == userId) {
+          const selectedUser = await getUserById(userId);
+          res.send(selectedUser);
+        }
+        else {
+          next({
+            error: 'UnauthorizedRequestError',
+            message: 'You are not authorized to view this data'
+          })
+        }
+      }
     }
-    
-  } catch (error) {
+  }
+  catch (error) {
+    next(error);
+  }
+});
+
+
+router.delete('/:userId', async (req, res, next) => { 
+  try {
+    console.log('entered delete user API');
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } 
+    else {
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId == userId) {
+        const deletedUser = await deleteUser(userId);
+        res.send(deletedUser);
+      }
+      else {
+        next({
+          error: 'UnauthorizedRequestError',
+          message: "You cannot delete someone else's account"
+        })
+      }
+    }
+  }
+  catch (error) {
+    next(error);
+  }
+});
+
+
+router.patch('/:userId', async (req, res, next) => { 
+  try {
+    const { userId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+    const data = req.body;
+
+    if (!auth) {
+      res.status(401);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+    } 
+    else {
+      const token = auth.slice(prefix.length);
+      const { id: tokenId } = jwt.verify(token, JWT_SECRET);
+
+      if (tokenId == userId) {
+        const updatedUser = await updateUser({
+          id: userId,
+          ...data
+        });
+        res.send(updatedUser);
+      }
+      else {
+        next({
+          error: 'UnauthorizedRequestError',
+          message: "You cannot edit someone else's account"
+        })
+      }
+    }
+  }
+  catch (error) {
     next(error);
   }
 });

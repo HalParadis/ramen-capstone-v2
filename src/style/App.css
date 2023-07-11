@@ -11,3 +11,11 @@
   color: var(--green);
   padding: 1rem;
 }
+
+.header-links > * {
+  margin: 1em;
+}
+
+/* .changeCountField {
+  display: flex;
+} */

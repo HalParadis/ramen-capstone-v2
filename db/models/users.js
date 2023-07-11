@@ -1,7 +1,7 @@
 // grab our db client connection to use with our adapters
 const client = require('../client');
 const bcrypt = require('bcrypt')
-const {getUsersItemsByUserId, deleteUserItem}= require('./users_items')
+const { getUsersItemsByUserId, deleteUserItem } = require('./users_items')
 
 const createUser = async ({username, password, email, address, isAdmin}) => {
       const SALT_COUNT = 5;
@@ -35,11 +35,12 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   try {
-    const {rows: [user]} = await client.query(`
+    const { rows: [user] } = await client.query(`
     SELECT *
     FROM users
     WHERE id=${id}
     `);
+    delete user.password;
     return user;
   } catch (error) {
     throw error;
@@ -48,7 +49,7 @@ const getUserById = async (id) => {
 
 const getUserByUsername = async (username) => {
   try {
-    const {rows: [user]} = await client.query(`
+    const { rows: [user] } = await client.query(`
     SELECT *
     FROM users
     WHERE username=$1;
@@ -87,24 +88,30 @@ const updateUser = async ({ id, ...fields }) => {
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
   try {
-    const {rows: [user]} = await client.query(`
-     UPDATE users
-     SET ${setString}
-     WHERE id=${id}
-     RETURNING *;
-     `, Object.values(fields));
+    console.log('setString', setString);
+    console.log('id', id);
+    const { rows: [user] } = await client.query(`
+      UPDATE users
+      SET ${setString}
+      WHERE id=${id}
+      RETURNING *;
+      `, Object.values(fields)
+    );
 
-     if(password){
+    console.log('user', user);
+
+    if (password) {
       const SALT_COUNT = 5;
       const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
-     const {rows: [user]} = await client.query(`
-     UPDATE users
-     SET password=$1
-     WHERE id=$2
-     RETURNING *;
-     `,[hashedPassword, id]);
-     }
-     console.log(user.password)
+      const { rows: [user] } = await client.query(`
+        UPDATE users
+        SET password=$1
+        WHERE id=$2
+        RETURNING *;
+        `, [hashedPassword, id]
+      );
+    }
+    //console.log(user.password)
     return user;
   } catch (error) {
     throw error;
@@ -114,15 +121,15 @@ const updateUser = async ({ id, ...fields }) => {
 const deleteUser = async (id) => {
   try {
     const usersItemsArr = await getUsersItemsByUserId(id)
-    usersItemsArr.forEach( async (userItem) => {
+    usersItemsArr.forEach(async (userItem) => {
       await deleteUserItem(userItem.id)
     })
-    const {rows: [user]} = await client.query(`
+    const { rows: [user] } = await client.query(`
       DELETE FROM users
       WHERE id=${id}
       RETURNING *;
   `);
-  return user;
+    return user;
   } catch (error) {
     throw error;
   }
