@@ -52,7 +52,6 @@ const Cart = ({
 
   return (
     <>
-      <h1>NOW VIEWING SHOPPING CART</h1>
       <h2>{user.username}'s Cart</h2>
 
       {

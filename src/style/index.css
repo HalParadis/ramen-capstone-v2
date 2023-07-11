@@ -8,7 +8,11 @@
   /* define variables here */
   --green: green;
   --red: red;
-  --blue: blue;
+  --EgyptianBlue: #1434A4;
+  --midnightBlue: #191970;
+  --periwinkle: #CCCCFF;
+  --pastelYellow: #FFFAA0;
+  --pastelPink: #F8C8DC;
 }
 
 html {
@@ -20,4 +24,5 @@ body {
   padding: 0;
   height: 100vh;
   width: 100vw;
+  background-color: var(--pastelYellow);
 }

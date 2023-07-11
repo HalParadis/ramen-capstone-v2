@@ -74,22 +74,24 @@ const App = () => {
       <header className='app-header'>
         <h1>We Love Ramen!</h1>
 
-        <div className='header-links'>
-          {user.isAdmin 
-          ? <>
-          <Link to='/admin/products'>Ramen</Link>
-          <Link to='/admin/users'>Users</Link>
-          <Link to='/account'>Account</Link> 
-          </> :<>
-          <Link to='/products'>Ramen</Link> |
-          {
-            token
-              ? <>
-                <Link to='/account'>Account</Link> |
-                <Link to='/cart'>Shopping Cart</Link>
-                </>
-              : <Link to='/users/login'>Login</Link>
-          }</>}
+        <div className='header-links-container'>
+          <div className='header-links'>
+            {user.isAdmin 
+            ? <>
+            <Link to='/admin/products'>Ramen</Link>
+            <Link to='/admin/users'>Users</Link>
+            <Link to='/account'>Account</Link> 
+            </> :<>
+            <Link to='/products'>Ramen</Link> |
+            {
+              token
+                ? <>
+                  <Link to='/account'>Account</Link> |
+                  <Link to='/cart'>Shopping Cart</Link>
+                  </>
+                : <Link to='/users/login'>Login</Link>
+            }</>}
+          </div>
         </div>
       </header>
 
