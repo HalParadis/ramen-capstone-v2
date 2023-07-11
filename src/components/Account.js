@@ -3,7 +3,13 @@ import {
   useHistory,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { deleteUserAPI, getUserByIdAPI, patchUserAPI } from "../axios-services";
+import { 
+  deleteUserAPI, 
+  getUserByIdAPI, 
+  patchUserAPI, 
+  deleteUserItemAPI, 
+  getUsersItemsByUserIdAPI 
+} from "../axios-services";
 
 const Account = ({ setToken, token, user, setUser }) => {
   const userId = user.id;
@@ -44,6 +50,12 @@ const Account = ({ setToken, token, user, setUser }) => {
   }
 
   const deleteUser = async () => {
+    const usersItems = await getUsersItemsByUserIdAPI({userId, token});
+
+    Promise.all(usersItems.map(async (userItem) => {
+      return await deleteUserItemAPI({ userItemId: userItem.id, token});
+    }));
+    
     const result = await deleteUserAPI({userId, token});
     if (result.error) {
       setErrorMessage(result.message);
