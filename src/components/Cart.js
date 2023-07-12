@@ -18,11 +18,8 @@ const Cart = ({
   const history = useHistory();
 
   const fetchCartItems = async () => {
-    console.log("also checking token here :", token)
-    console.log("test userid here: ", user.id)
     const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
     const newCartItems = [];
-    console.log( "cart items here: ", dataUsersItems)
 
     dataUsersItems.forEach(async (userItem) => {
       const ramen = await fetchRamenById(userItem.ramenId);

@@ -40,7 +40,6 @@ const handleDelete = async (productId) => {
 
 
 const updateRamen = async () =>{
-  console.log("It's entered")
   const newRam = await updateRamenFromAPI({id: productId, token, name, price, description, brand})
   if (newRam.error) {
     setErrorMessage(result.message);

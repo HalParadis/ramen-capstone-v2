@@ -23,7 +23,7 @@ const UserForm = ({ setToken, token, setUser}) => {
       const result = await loginAPI({ username, password });
       console.log(result);
       if(result.user.isAdmin===true){
-        history.push("/admin")
+        history.push("/account")
       }
       if (result.error) {
         setErrorMessage(result.message);
