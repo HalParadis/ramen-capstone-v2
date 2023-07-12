@@ -11,28 +11,52 @@ import {
 const Checkout = ({
   token,
   fetchRamenById,
-  user
+  user,
+  fetchCartItems,
+  cartItems
 }) => {
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [needToUpdatePrice, setNeedToUpdatePrice] = useState(false);
   const history = useHistory();
 
-  const fetchCartItems = async () => {
-    const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
-    const newCartItems = [];
+  // const fetchCartItems = async () => {
+  //   const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
+  //   const newCartItems = [];
 
-    dataUsersItems.forEach(async (userItem) => {
-      const ramen = await fetchRamenById(userItem.ramenId);
-      ramen.count = userItem.count;
-      newCartItems.push(ramen);
-    });
+  //   Promise.all(dataUsersItems.map(async (userItem) => {
+  //     const ramen = await fetchRamenById(userItem.ramenId);
+  //     ramen.count = userItem.count;
+  //     newCartItems.push(ramen);
+  //     return ramen;
+  //   }));
 
-    setCartItems(newCartItems);
+  //   setCartItems(newCartItems);
     
-    cartItems.forEach((cartEl) => {
-      setTotalPrice(totalPrice + (cartEl.price * cartEl.count));
+  //   console.log('newCartItems: ', newCartItems);
+
+  //   return newCartItems;
+  // }
+
+  const updatePrice = () => {
+    let newTotalPrice = 0;
+    cartItems.forEach(cartEl => {
+      let elPrice = cartEl.price.replace(/[^\.0-9]/, '');
+      newTotalPrice += elPrice * cartEl.count;
+      //console.log('newTotalPrice', newTotalPrice);
     });
+    // console.log('cartItems[0]', cartItems[0]);
+    // for (let i = 0; i < cartItems.length; i++) {
+    //   newTotalPrice += cartItems[i].price * cartItems[i].count;
+    //   console.log('newTotalPrice', newTotalPrice);
+    // }
+    setTotalPrice(newTotalPrice);
   }
+
+  // const updateCartAndPrice = async () => {
+  //   // await fetchCartItems();
+  //   updatePrice();
+  // }
 
   const handleDelete = async (itemId) => {
     const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
@@ -43,13 +67,10 @@ const Checkout = ({
   }
 
   useEffect(() => {
-    if (!token) {
-      history.push("/users/login");
-    }
-    else {
-      fetchCartItems();
-    }
-  }, [])
+    fetchCartItems();
+    updatePrice();
+    setNeedToUpdatePrice(false);
+  }, [needToUpdatePrice]);
 
   return (
     <>
@@ -66,6 +87,8 @@ const Checkout = ({
               user={user}
               fetchCartItems={fetchCartItems}
               handleDelete={handleDelete}
+              updatePrice={updatePrice}
+              setNeedToUpdatePrice={setNeedToUpdatePrice}
             />
           )
         })

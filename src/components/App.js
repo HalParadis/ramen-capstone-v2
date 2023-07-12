@@ -23,6 +23,7 @@ import {
   getAllUsersFromAPI,
   getRamenByIdFromAPI,
   updateRamenFromAPI,
+  getUsersItemsByUserIdAPI
 } from "../axios-services";
 
 import "../style/App.css";
@@ -35,6 +36,7 @@ const App = () => {
   const [token, setToken] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState({});
+  const [cartItems, setCartItems] = useState([]);
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
@@ -51,7 +53,23 @@ const App = () => {
     return selectedRamen;
   };
 
+  const fetchCartItems = async () => {
+    const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
+    const newCartItems = [];
+
+    Promise.all(dataUsersItems.map(async (userItem) => {
+      const ramen = await fetchRamenById(userItem.ramenId);
+      ramen.count = userItem.count;
+      newCartItems.push(ramen);
+      return ramen;
+    }));
+
+    setCartItems(newCartItems);
+    return newCartItems;
+  }
+
   useEffect(() => {
+    console.log('entered app useEffect');
     // follow this pattern inside your useEffect calls:
     // first, create an async function that will wrap your axios service adapter
     // invoke the adapter, await the response, and set the data
@@ -67,6 +85,7 @@ const App = () => {
     
     fetchRamen();
     fetchUsers();
+    fetchCartItems();
   }, []);
 
   return (
@@ -138,6 +157,8 @@ const App = () => {
           token={token}
           fetchRamenById={fetchRamenById}
           user={user}
+          fetchCartItems={fetchCartItems}
+          cartItems={cartItems}
         />
       </Route>
 

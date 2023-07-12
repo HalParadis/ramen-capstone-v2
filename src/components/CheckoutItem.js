@@ -6,29 +6,36 @@ const CheckoutItem = ({
   item,
   handleDelete,
   token,
-  user
+  user,
+  setNeedToUpdatePrice,
+  updatePrice,
+  fetchCartItems
 }) => {
-  const [count, setCount] = useState('');
-  const [userItem, setUserItem] = useState({});
+  const [count, setCount] = useState(item.count);
+  // const [userItem, setUserItem] = useState({});
   
-  const changeCount = async (newCount) => {
-    console.log('old count', count);
-    setCount(newCount);
-    console.log('new count', count);
-    const newUserItem = await patchUserItemAPI({userItemId: userItem.id, token, count});
-    console.log('newUserItem', newUserItem);
-  } 
-
-  const getUserItem = async () => {
+  const setCartItem = async () => {
+    // console.log('old count', count);
+    // setCount(newCount);
+    // console.log('new count', count);
     const usersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
     const userItem = usersItems.find(userItem => userItem.ramenId == item.id);
-    setUserItem(userItem);
-  }
+    
+    const newUserItem = await patchUserItemAPI({userItemId: userItem.id, token, count});
+    console.log('newUserItem', newUserItem);
+    setNeedToUpdatePrice(true);
+  } 
+
+  // const getUserItem = async () => {
+  //   const usersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
+  //   const userItem = usersItems.find(userItem => userItem.ramenId == item.id);
+  //   setUserItem(userItem);
+  //   setCount(userItem.count);
+  // }
 
   useEffect(() => {
-    getUserItem();
-    setCount(userItem.count);
-  }, [])
+    setCartItem();
+  }, [count])
 
   return (
     <div className='checkoutItem' key={item.id ?? idx}>
@@ -38,12 +45,18 @@ const CheckoutItem = ({
       <div className='changeCountField' >
         <button
           type='button'
-          onClick={() => count > 1 && changeCount(count - 1)}
+          onClick={() => {
+            if (count > 1) {
+              setCount(count - 1);
+            }
+          }}
         >-</button>
         <span>{count}</span>
         <button
           type='button'
-          onClick={() => changeCount(count + 1)}
+          onClick={() => {
+            setCount(count + 1);
+          }}
         >+</button>
       </div>
 
