@@ -56,29 +56,33 @@ const UserForm = ({ setToken, token, setUser}) => {
 
   return (
     <>
-      <h2>{actionType === "login" ? "Login" : "Register"}</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 className="login-register">{actionType === "login" ? "Login" : "Register"}</h2>
+      <form className="form-login" onSubmit={handleSubmit}>
         {errorMessage && <p>{errorMessage}</p>}
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          minLength="3"
-          maxLength="20"
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          minLength="3"
-          maxLength="20"
-          required
-        />
+        <div className="login-inputs">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            minLength="3"
+            maxLength="20"
+            required
+          />
+        </div>
+        <div className="login-inputs">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            minLength="3"
+            maxLength="20"
+            required
+          />
+        </div>
         {actionType === "register" && (
           <>
             <label htmlFor="email">Email</label>
@@ -102,7 +106,7 @@ const UserForm = ({ setToken, token, setUser}) => {
             />
           </>
         )}
-        <button type="submit">Submit</button>
+        <button className="login-button" type="submit">Submit</button>
         {actionType === "login" ? (
           <Link to="/users/register">
             Don't have an account? Register Here!
