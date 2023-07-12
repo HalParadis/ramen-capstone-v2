@@ -1,16 +1,13 @@
 import React, { useState, useEffect, } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import { CartItem } from './index';
 
 import {
-  getUsersItemsByUserIdAPI,
-  patchUserItemAPI,
-  deleteUserItemAPI,
-  getAllRamenFromAPI
+  getUsersItemsByUserIdAPI
 } from '../axios-services';
 
 const Cart = ({
   token,
-  fetchRamen,
   fetchRamenById,
   user
 }) => {
@@ -30,17 +27,6 @@ const Cart = ({
     setCartItems(newCartItems);
   }
 
-  const handleDelete = async (itemId) => {
-    const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
-    const { id } = dataUsersItems.find(userItem => userItem.ramenId == itemId);
-    console.log("test id here: ", id)
-    console.log("also checking token here :", token)
-    const deletedUserItem = await deleteUserItemAPI({userItemId: id, token});
-    console.log('deletedUserItem', deletedUserItem);
-    await fetchCartItems();
-  }
-
-
   useEffect(() => {
     if (!token) {
       history.push("/users/login");
@@ -54,24 +40,19 @@ const Cart = ({
 
   return (
     <>
-      <h1>NOW VIEWING SHOPPING CART</h1>
       <h2>{user.username}'s Cart</h2>
 
       {
         cartItems &&
         cartItems.map((item, idx) => {
           return (
-            <div key={item.id ?? idx}>
-              <h3>Name: {item.name}</h3>
-              <p>Price: {item.price}</p>
-              <p>Description: {item.description}</p>
-              <h3>Count: {item.count}</h3>
-
-              <button
-                type="button"
-                onClick={() => handleDelete(item.id)}
-              >Delete</button>
-            </div>
+            <CartItem 
+              key={item.id ?? idx}
+              item={item}
+              token={token}
+              user={user}
+              fetchCartItems={fetchCartItems}
+            />
           )
         })
       }

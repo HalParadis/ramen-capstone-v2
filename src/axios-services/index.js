@@ -174,7 +174,6 @@ export async function getUsersItemsByUserIdAPI({userId, token}) {
       `/api/users_items/${userId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
-      console.log("axios cart items: ", usersItems)
     return usersItems;
   } catch (error) {
     console.error(error?.response?.data);
@@ -200,7 +199,6 @@ export async function patchUserItemAPI({userItemId, token, ...bodyData}) {
       {...bodyData},
       {headers: { Authorization: `Bearer ${token}` }}
       );
-      console.log("updateCount: ", updateCount);
     return updateCount;
   } catch (error) {
     console.error(error?.response?.data);

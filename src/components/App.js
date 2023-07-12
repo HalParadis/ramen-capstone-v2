@@ -9,7 +9,8 @@ import {
   UsersAdmin,
   AdminCreateProduct,
   Account,
-  Cart
+  Cart,
+  Checkout
 } from "./index";
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -21,6 +22,7 @@ import {
   getAllUsersFromAPI,
   getRamenByIdFromAPI,
   updateRamenFromAPI,
+  getUsersItemsByUserIdAPI
 } from "../axios-services";
 
 import "../style/App.css";
@@ -34,6 +36,8 @@ const App = () => {
   const [token, setToken] =  useState( localStorage.getItem("token") ?? "");
   const [allUsers, setAllUsers] = useState( [] );
   const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {});
+  const [cartItems, setCartItems] = useState([]);
+
   const history = useHistory()
 
   const fetchRamen = async () => {
@@ -52,6 +56,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.log('entered app useEffect');
     // follow this pattern inside your useEffect calls:
     // first, create an async function that will wrap your axios service adapter
     // invoke the adapter, await the response, and set the data
@@ -72,6 +77,7 @@ const App = () => {
       localStorage.setItem('user', JSON.stringify(user));
     }
     else {
+      setUser({});
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
@@ -139,20 +145,39 @@ const App = () => {
           fetchRamenById={fetchRamenById}
         />
       </Route>
-          {user.isAdmin ? <>
-      <Route exact path="/admin/products">
-        <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
+
+      <Route path='/checkout'>
+        <Checkout 
+          token={token}
+          fetchRamenById={fetchRamenById}
+          user={user}
+          // fetchCartItems={fetchCartItems}
+          cartItems={cartItems}
+        />
       </Route>
 
-      <Route path="/admin/users">
-        <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} 
-          selectedRamen={selectedRamen}
-          fetchRamenById={fetchRamenById}
-          token={token}
-        />
-      </Route> </>
+      <Route path='/thank_you!'>
+        <h2>Thank You For Choosing To Shop With Us Today!</h2>
+      </Route>
 
-:  null }
+      {
+        user.isAdmin 
+        ? <>
+          <Route exact path="/admin/products">
+            <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
+          </Route>
+
+          <Route path="/admin/users">
+            <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} 
+              selectedRamen={selectedRamen}
+              fetchRamenById={fetchRamenById}
+              token={token}
+            />
+          </Route> 
+        </>
+        : null 
+      }
+
       <Route exact path="/admin/products/:productId">
         <AdminProductDetails
           token={token}
