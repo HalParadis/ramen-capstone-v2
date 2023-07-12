@@ -53,20 +53,20 @@ const App = () => {
     return selectedRamen;
   };
 
-  const fetchCartItems = async () => {
-    const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
-    const newCartItems = [];
+  // const fetchCartItems = async () => {
+  //   const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
+  //   const newCartItems = [];
 
-    Promise.all(dataUsersItems.map(async (userItem) => {
-      const ramen = await fetchRamenById(userItem.ramenId);
-      ramen.count = userItem.count;
-      newCartItems.push(ramen);
-      return ramen;
-    }));
+  //   Promise.all(dataUsersItems.map(async (userItem) => {
+  //     const ramen = await fetchRamenById(userItem.ramenId);
+  //     ramen.count = userItem.count;
+  //     newCartItems.push(ramen);
+  //     return ramen;
+  //   }));
 
-    setCartItems(newCartItems);
-    return newCartItems;
-  }
+  //   setCartItems(newCartItems);
+  //   return newCartItems;
+  // }
 
   useEffect(() => {
     console.log('entered app useEffect');
@@ -85,7 +85,7 @@ const App = () => {
     
     fetchRamen();
     fetchUsers();
-    fetchCartItems();
+    // fetchCartItems();
   }, []);
 
   return (
@@ -157,9 +157,13 @@ const App = () => {
           token={token}
           fetchRamenById={fetchRamenById}
           user={user}
-          fetchCartItems={fetchCartItems}
+          // fetchCartItems={fetchCartItems}
           cartItems={cartItems}
         />
+      </Route>
+
+      <Route path='/thank_you!'>
+        <h2>Thank You For Choosing To Shop With Us Today!</h2>
       </Route>
 
       <Route exact path="/admin/products">

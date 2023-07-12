@@ -15,7 +15,6 @@ const CartItem = ({
     const userItem = usersItems.find(userItem => userItem.ramenId == item.id);
     
     const updatedUserItem = await patchUserItemAPI({userItemId: userItem.id, token, count});
-    console.log('updatedUserItem', updatedUserItem);
   } 
 
   const handleDelete = async (itemId) => {
@@ -33,7 +32,7 @@ const CartItem = ({
   return (
     <div className='cartItem' key={item.id ?? idx}>
       <span>Name: {item.name}</span>
-      <span>Price: {item.price}</span>
+      <span>Unit Price: {item.price}</span>
 
       <div className='changeCountField' >
         <button

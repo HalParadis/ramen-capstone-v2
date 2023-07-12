@@ -188,7 +188,6 @@ export async function patchUserItemAPI({userItemId, token, ...bodyData}) {
       {...bodyData},
       {headers: { Authorization: `Bearer ${token}` }}
       );
-      console.log("updateCount: ", updateCount);
     return updateCount;
   } catch (error) {
     console.error(error?.response?.data);

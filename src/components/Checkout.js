@@ -1,76 +1,59 @@
 import React, { useState, useEffect, } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { CheckoutItem } from './index';
 import {
   getUsersItemsByUserIdAPI,
   patchUserItemAPI,
   deleteUserItemAPI,
   getAllRamenFromAPI
 } from '../axios-services';
+import CartItem from './CartItem';
 
 const Checkout = ({
   token,
   fetchRamenById,
   user,
-  fetchCartItems,
-  cartItems
 }) => {
   // const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [needToUpdatePrice, setNeedToUpdatePrice] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
   const history = useHistory();
 
-  // const fetchCartItems = async () => {
-  //   const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
-  //   const newCartItems = [];
-
-  //   Promise.all(dataUsersItems.map(async (userItem) => {
-  //     const ramen = await fetchRamenById(userItem.ramenId);
-  //     ramen.count = userItem.count;
-  //     newCartItems.push(ramen);
-  //     return ramen;
-  //   }));
-
-  //   setCartItems(newCartItems);
-    
-  //   console.log('newCartItems: ', newCartItems);
-
-  //   return newCartItems;
-  // }
-
-  const updatePrice = () => {
+  const fetchCartItems = async () => {
+    const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
+    const newCartItems = [];
     let newTotalPrice = 0;
-    cartItems.forEach(cartEl => {
-      let elPrice = cartEl.price.replace(/[^\.0-9]/, '');
-      newTotalPrice += elPrice * cartEl.count;
-      //console.log('newTotalPrice', newTotalPrice);
+
+    dataUsersItems.forEach(async (userItem) => {
+      const ramen = await fetchRamenById(userItem.ramenId);
+      ramen.count = userItem.count;
+      newCartItems.push(ramen);
+      let ramenPrice = ramen.price.replace(/[^\.0-9]/, '')
+      newTotalPrice += ramenPrice * userItem.count;
+      console.log('newTotalPrice', newTotalPrice);
+      setTotalPrice(newTotalPrice);
     });
-    // console.log('cartItems[0]', cartItems[0]);
-    // for (let i = 0; i < cartItems.length; i++) {
-    //   newTotalPrice += cartItems[i].price * cartItems[i].count;
-    //   console.log('newTotalPrice', newTotalPrice);
-    // }
-    setTotalPrice(newTotalPrice);
+
+    setCartItems(newCartItems);
   }
 
-  // const updateCartAndPrice = async () => {
-  //   // await fetchCartItems();
-  //   updatePrice();
-  // }
-
-  const handleDelete = async (itemId) => {
-    const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
-    const { id } = dataUsersItems.find(userItem => userItem.ramenId == itemId);
-    const deletedUserItem = await deleteUserItemAPI({ userItemId: id, token });
-    console.log('deletedUserItem', deletedUserItem);
-    await fetchCartItems();
+  const handleCheckout = async () => {
+    cartItems.forEach(async (cartItem) => {
+      const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
+      const { id } = dataUsersItems.find(userItem => userItem.ramenId == cartItem.id);
+      const deletedUserItem = await deleteUserItemAPI({ userItemId: id, token });
+      console.log('deletedUserItem', deletedUserItem);
+    });
+    history.push('/thank_you!')
   }
 
   useEffect(() => {
-    fetchCartItems();
-    updatePrice();
-    setNeedToUpdatePrice(false);
-  }, [needToUpdatePrice]);
+    if (!token) {
+      history.push("/users/login");
+    }
+    else {
+      fetchCartItems();
+    }
+  }, [token])
 
   return (
     <>
@@ -79,17 +62,13 @@ const Checkout = ({
       {
         cartItems &&
         cartItems.map((item, idx) => {
-          return (
-            <CheckoutItem
-              key={item.id ?? idx}
-              item={item}
-              token={token}
-              user={user}
-              fetchCartItems={fetchCartItems}
-              handleDelete={handleDelete}
-              updatePrice={updatePrice}
-              setNeedToUpdatePrice={setNeedToUpdatePrice}
-            />
+          return ( 
+            <div key={item.id ?? idx}>
+              <span>Name: {item.name} </span>
+              <span>Brand: {item.brand} </span>
+              <span>Price: {item.price} </span>
+              <span>Count: {item.count}</span>
+            </div>
           )
         })
       }
@@ -98,7 +77,7 @@ const Checkout = ({
 
       <button
         type="button"
-        onClick={() => history.push('/checkout')}
+        onClick={handleCheckout}
       >Place Your Order</button>
     </>
   )

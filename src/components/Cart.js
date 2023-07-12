@@ -8,7 +8,6 @@ import {
 
 const Cart = ({
   token,
-  fetchRamen,
   fetchRamenById,
   user
 }) => {
