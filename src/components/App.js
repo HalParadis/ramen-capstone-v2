@@ -5,7 +5,6 @@ import {
   Products,
   ProductDetails,
   UserForm,
-  AdminPage,
   ProductsAdmin,
   UsersAdmin,
   AdminCreateProduct,
@@ -28,15 +27,18 @@ import {
 
 import "../style/App.css";
 import AdminProductDetails from "./AdminProductDetails";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const App = () => {
   const [APIHealth, setAPIHealth] = useState("");
   const [allRamen, setAllRamen] = useState([]);
   const [selectedRamen, setSelectedRamen] = useState(undefined);
-  const [token, setToken] = useState("");
-  const [allUsers, setAllUsers] = useState([]);
-  const [user, setUser] = useState({});
+  const [token, setToken] =  useState( localStorage.getItem("token") ?? "");
+  const [allUsers, setAllUsers] = useState( [] );
+  const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {});
   const [cartItems, setCartItems] = useState([]);
+
+  const history = useHistory()
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
@@ -53,21 +55,6 @@ const App = () => {
     return selectedRamen;
   };
 
-  // const fetchCartItems = async () => {
-  //   const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
-  //   const newCartItems = [];
-
-  //   Promise.all(dataUsersItems.map(async (userItem) => {
-  //     const ramen = await fetchRamenById(userItem.ramenId);
-  //     ramen.count = userItem.count;
-  //     newCartItems.push(ramen);
-  //     return ramen;
-  //   }));
-
-  //   setCartItems(newCartItems);
-  //   return newCartItems;
-  // }
-
   useEffect(() => {
     console.log('entered app useEffect');
     // follow this pattern inside your useEffect calls:
@@ -81,12 +68,20 @@ const App = () => {
     // second, after you've defined your getter above
     // invoke it immediately after its declaration, inside the useEffect callback
     getAPIStatus();
-
     
     fetchRamen();
     fetchUsers();
-    // fetchCartItems();
-  }, []);
+
+    if (token !== "") {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+    else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+
+  }, [token]);
 
   return (
     <div className='app-container'>
@@ -94,24 +89,22 @@ const App = () => {
       <header className='app-header'>
         <h1>We Love Ramen!</h1>
 
-        <div className='header-links-container'>
-          <div className='header-links'>
-            {user.isAdmin 
-            ? <>
-            <Link to='/admin/products'>Ramen</Link>
-            <Link to='/admin/users'>Users</Link>
-            <Link to='/account'>Account</Link> 
-            </> :<>
-            <Link to='/products'>Ramen</Link> |
-            {
-              token
-                ? <>
-                  <Link to='/account'>Account</Link> |
-                  <Link to='/cart'>Shopping Cart</Link>
-                  </>
-                : <Link to='/users/login'>Login</Link>
-            }</>}
-          </div>
+        <div className='header-links'>
+          {user.isAdmin 
+          ? <>
+          <Link to='/admin/products'>Ramen</Link>
+          <Link to='/admin/users'>Users</Link>
+          <Link to='/account'>Account</Link> 
+          </> :<>
+          <Link to='/products'>Ramen</Link> |
+          {
+            token && user.username
+              ? <>
+                <Link to='/account'>Account</Link> |
+                <Link to='/cart'>Shopping Cart</Link>
+                </>
+              : <Link to='/users/login'>Login</Link>
+          }</>}
         </div>
       </header>
 
@@ -132,7 +125,7 @@ const App = () => {
       </Route>
 
       <Route path="/users/:actionType">
-        <UserForm setToken={setToken} token={token} setUser={setUser}/>
+        <UserForm setToken={setToken} token={token} setUser={setUser} />
       </Route>
 
       <Route path='/account'>
@@ -166,17 +159,23 @@ const App = () => {
         <h2>Thank You For Choosing To Shop With Us Today!</h2>
       </Route>
 
-      <Route exact path="/admin/products">
-        <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
-      </Route>
+      {
+        user.isAdmin 
+        ? <>
+          <Route exact path="/admin/products">
+            <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
+          </Route>
 
-      <Route path="/admin/users">
-        <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} 
-          selectedRamen={selectedRamen}
-          fetchRamenById={fetchRamenById}
-          token={token}
-        />
-      </Route>
+          <Route path="/admin/users">
+            <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} 
+              selectedRamen={selectedRamen}
+              fetchRamenById={fetchRamenById}
+              token={token}
+            />
+          </Route> 
+        </>
+        : null 
+      }
 
       <Route exact path="/admin/products/:productId">
         <AdminProductDetails

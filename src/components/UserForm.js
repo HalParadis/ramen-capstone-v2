@@ -7,7 +7,7 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import { loginAPI, registerAPI } from "../axios-services";
 
-const UserForm = ({ setToken, token, setUser }) => {
+const UserForm = ({ setToken, token, setUser}) => {
   const { actionType } = useParams();
   const history = useHistory();
   const [username, setUsername] = useState("");
@@ -23,7 +23,7 @@ const UserForm = ({ setToken, token, setUser }) => {
       const result = await loginAPI({ username, password });
       console.log(result);
       if(result.user.isAdmin===true){
-        history.push("/admin")
+        history.push("/account")
       }
       if (result.error) {
         setErrorMessage(result.message);
@@ -51,7 +51,7 @@ const UserForm = ({ setToken, token, setUser }) => {
   };
 
   useEffect(() => {
-    if (token) history.push("/account"); //Change to account page when possible
+    if (token) history.push("/account");
   }, [token]);
 
   return (
