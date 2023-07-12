@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { deleteRamenFromAPI, getRamenByIdFromAPI, getUserByIdFromAPI, updateRamenFromAPI } from "../axios-services";
+import { deleteRamenFromAPI, deleteUserItemAPI, getRamenByIdFromAPI, getUserByIdFromAPI, getUsersItemsByRamenIdAPI, updateRamenFromAPI } from "../axios-services";
 
 const AdminProductDetails = ({token, fetchRamen}) => {
   const params = useParams();
@@ -27,10 +27,14 @@ const AdminProductDetails = ({token, fetchRamen}) => {
   }
 
 const handleDelete = async (productId) => {
-  console.log(productId)
+  const userItems = await getUsersItemsByRamenIdAPI({id: productId, token});
+  Promise.all(userItems.map(async (userItem) => {
+    return await deleteUserItemAPI({ userItemId: userItem.id, token});
+  }));
  const deleteRam = await deleteRamenFromAPI({id: productId, token})
  await fetchRamen()
  history.push('/admin/products')
+ return deleteRam;
 }
 
 
@@ -38,7 +42,6 @@ const handleDelete = async (productId) => {
 const updateRamen = async () =>{
   console.log("It's entered")
   const newRam = await updateRamenFromAPI({id: productId, token, name, price, description, brand})
-  console.log("newRam: ",newRam)
   if (newRam.error) {
     setErrorMessage(result.message);
     console.error(errorMessage)

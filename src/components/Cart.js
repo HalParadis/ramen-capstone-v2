@@ -18,8 +18,11 @@ const Cart = ({
   const history = useHistory();
 
   const fetchCartItems = async () => {
+    console.log("also checking token here :", token)
+    console.log("test userid here: ", user.id)
     const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
     const newCartItems = [];
+    console.log( "cart items here: ", dataUsersItems)
 
     dataUsersItems.forEach(async (userItem) => {
       const ramen = await fetchRamenById(userItem.ramenId);
@@ -33,6 +36,8 @@ const Cart = ({
   const handleDelete = async (itemId) => {
     const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
     const { id } = dataUsersItems.find(userItem => userItem.ramenId == itemId);
+    console.log("test id here: ", id)
+    console.log("also checking token here :", token)
     const deletedUserItem = await deleteUserItemAPI({userItemId: id, token});
     console.log('deletedUserItem', deletedUserItem);
     await fetchCartItems();

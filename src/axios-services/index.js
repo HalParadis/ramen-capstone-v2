@@ -174,6 +174,18 @@ export async function getUsersItemsByUserIdAPI({userId, token}) {
       `/api/users_items/${userId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
+      console.log("axios cart items: ", usersItems)
+    return usersItems;
+  } catch (error) {
+    console.error(error?.response?.data);
+    return error?.response?.data;
+  }
+}
+
+export async function getUsersItemsByRamenIdAPI({id, token}) {
+  try{
+    const {data: usersItems} = await axios.get(`/api/users_items/ramen/${id}`, {headers: { Authorization: `Bearer ${token}` }})
+    console.log("usersItems axios: ", usersItems)
     return usersItems;
   } catch (error) {
     console.error(error?.response?.data);
@@ -202,6 +214,7 @@ export async function deleteUserItemAPI({userItemId, token}) {
       `/api/users_items/${userItemId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
+      console.log("deleteData: ", deleteData)
     return deleteData;
   } catch (error) {
     console.error(error?.response?.data);
@@ -216,6 +229,7 @@ export async function postUserItemAPI({ramenId, count, token}) {
       { count },
       {headers: { Authorization: `Bearer ${token}` }}
       );
+      console.log(" Added item: ", newUserItem)
     return newUserItem;
   } catch (error) {
     console.error(error?.response?.data);

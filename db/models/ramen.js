@@ -44,7 +44,7 @@ const deleteRamen = async (id) => {
     try{
         const usersItemsArr = await getUsersItemsByRamenId(id)
         usersItemsArr.forEach(async (userItem) => {
-        await deleteUserItem(userItem.id)
+         await deleteUserItem(userItem.id);
      })
         const {rows: [ramen]} = await client.query(`
         DELETE FROM ramen

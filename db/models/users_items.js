@@ -51,8 +51,8 @@ const getUsersItemsByRamenId = async (id) => {
         FROM users_items
         WHERE "ramenId"=$1
       `, [id]);
+      console.log("userItems db: ",usersItems)
       return usersItems;
-  
     } catch (error) {
       console.error(error);
     }
