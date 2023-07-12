@@ -13,9 +13,9 @@ const Checkout = ({
   fetchRamenById,
   user,
 }) => {
-  // const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartItems, setCartItems] = useState([]);
+  const [address, setAddress] = useState(user.address ?? '');
   const history = useHistory();
 
   const fetchCartItems = async () => {
@@ -27,7 +27,7 @@ const Checkout = ({
       const ramen = await fetchRamenById(userItem.ramenId);
       ramen.count = userItem.count;
       newCartItems.push(ramen);
-      let ramenPrice = ramen.price.replace(/[^\.0-9]/, '')
+      let ramenPrice = ramen.price.replace(/[^\.0-9]/, '');
       newTotalPrice += ramenPrice * userItem.count;
       console.log('newTotalPrice', newTotalPrice);
       setTotalPrice(newTotalPrice);
@@ -46,6 +46,11 @@ const Checkout = ({
     history.push('/thank_you!')
   }
 
+  const changeToCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+
   useEffect(() => {
     if (!token) {
       history.push("/users/login");
@@ -59,21 +64,52 @@ const Checkout = ({
     <>
       <h2>Checkout</h2>
 
-      {
-        cartItems &&
-        cartItems.map((item, idx) => {
-          return ( 
-            <div key={item.id ?? idx}>
-              <span>Name: {item.name} </span>
-              <span>Brand: {item.brand} </span>
-              <span>Price: {item.price} </span>
-              <span>Count: {item.count}</span>
-            </div>
-          )
-        })
-      }
+      <form>
+        <h3>Shipping Address</h3>
+        <input 
+          type='text'
+          name='address'
+          value={address}
+          onChange={(event) => setAddress(event.target.value)}
+        />
+      </form>
 
-      <h3>Total Price: {totalPrice}</h3>
+      <div>
+        <h3>Cart Items</h3>
+        {
+          cartItems &&
+          cartItems.map((item, idx) => {
+            return ( 
+              <div key={item.id ?? idx}>
+                <span>Name: {item.name} </span>
+                <span>Brand: {item.brand} </span>
+                <span>Price: {item.price} </span>
+                <span>Count: {item.count}</span>
+              </div>
+            )
+          })
+        }
+      </div>
+
+      <form>
+        <h3>Payment Information</h3>
+        <lable htmlFor='cardNumber'>Card Number: </lable>
+        <input 
+          type='text'
+          name='cardNumber'
+          value='xxxx-xxxx-xxxx-1234'
+          readOnly='true'
+        />
+        <lable htmlFor='cardName'>Name On Card: </lable>
+        <input 
+          type='text'
+          name='cardName'
+          value='Jane Doe'
+          readOnly='true'
+        />
+      </form>
+
+      <h3>Total Price: {changeToCurrency.format(totalPrice)}</h3>
 
       <button
         type="button"
