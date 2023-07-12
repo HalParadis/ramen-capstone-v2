@@ -77,6 +77,7 @@ const App = () => {
       localStorage.setItem('user', JSON.stringify(user));
     }
     else {
+      setUser({});
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
