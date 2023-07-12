@@ -5,7 +5,6 @@ import {
   Products,
   ProductDetails,
   UserForm,
-  AdminPage,
   ProductsAdmin,
   UsersAdmin,
   AdminCreateProduct,
@@ -26,14 +25,16 @@ import {
 
 import "../style/App.css";
 import AdminProductDetails from "./AdminProductDetails";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const App = () => {
   const [APIHealth, setAPIHealth] = useState("");
   const [allRamen, setAllRamen] = useState([]);
   const [selectedRamen, setSelectedRamen] = useState(undefined);
-  const [token, setToken] = useState("");
-  const [allUsers, setAllUsers] = useState([]);
-  const [user, setUser] = useState({});
+  const [token, setToken] =  useState( localStorage.getItem("token") ?? "");
+  const [allUsers, setAllUsers] = useState( [] );
+  const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {});
+  const history = useHistory()
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
@@ -62,11 +63,20 @@ const App = () => {
     // second, after you've defined your getter above
     // invoke it immediately after its declaration, inside the useEffect callback
     getAPIStatus();
-
     
     fetchRamen();
     fetchUsers();
-  }, []);
+
+    if (token !== "") {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+    else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+
+  }, [token]);
 
   return (
     <div className='app-container'>
@@ -83,7 +93,7 @@ const App = () => {
           </> :<>
           <Link to='/products'>Ramen</Link> |
           {
-            token
+            token && user.username
               ? <>
                 <Link to='/account'>Account</Link> |
                 <Link to='/cart'>Shopping Cart</Link>
@@ -110,7 +120,7 @@ const App = () => {
       </Route>
 
       <Route path="/users/:actionType">
-        <UserForm setToken={setToken} token={token} setUser={setUser}/>
+        <UserForm setToken={setToken} token={token} setUser={setUser} />
       </Route>
 
       <Route path='/account'>
@@ -129,9 +139,7 @@ const App = () => {
           fetchRamenById={fetchRamenById}
         />
       </Route>
-
-
-
+          {user.isAdmin ? <>
       <Route exact path="/admin/products">
         <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
       </Route>
@@ -142,8 +150,9 @@ const App = () => {
           fetchRamenById={fetchRamenById}
           token={token}
         />
-      </Route>
+      </Route> </>
 
+:  null }
       <Route exact path="/admin/products/:productId">
         <AdminProductDetails
           token={token}

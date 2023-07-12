@@ -33,6 +33,8 @@ const Cart = ({
   const handleDelete = async (itemId) => {
     const dataUsersItems = await getUsersItemsByUserIdAPI({userId: user.id, token});
     const { id } = dataUsersItems.find(userItem => userItem.ramenId == itemId);
+    console.log("test id here: ", id)
+    console.log("also checking token here :", token)
     const deletedUserItem = await deleteUserItemAPI({userItemId: id, token});
     console.log('deletedUserItem', deletedUserItem);
     await fetchCartItems();

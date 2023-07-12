@@ -10,9 +10,20 @@ const {
   deleteUserItem,
   getUserById,
   createUserItem,
-  getUserItemByUserItemId
+  getUserItemByUserItemId,
+  getUsersItemsByRamenId 
 } = require('../db/models');
 
+
+router.get('/ramen/:ramenId', async (req, res, next) =>{
+  try {
+    const { ramenId } = req.params
+    const ramen =  await getUsersItemsByRamenId(ramenId);
+    res.send(ramen);
+  } catch (error) {
+    next(error);
+  }
+})
 
 router.post('/:ramenId', async (req, res, next) => {
   try {
@@ -140,6 +151,44 @@ router.delete('/:userItemId', async (req, res, next) => {
 
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length);
+      const { id: tokenId , isAdmin } = jwt.verify(token, JWT_SECRET);
+      console.log("userItemId API: ", userItemId);
+      const userItem = await getUserItemByUserItemId({ userItemId });
+      //console.log("userItem: ", userItem);
+      console.log("isAdmin: ", isAdmin)
+      if (isAdmin === true || tokenId == userItem.userId) {
+        const tokenDeleteUserItem = await deleteUserItem({ id: userItemId });
+        res.send(tokenDeleteUserItem);
+      }
+      else {
+        next({
+          error: 'UnauthorizedRequestError',
+          message: 'You are not authorized to delete this data'
+        });
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete('/:userItemId', async (req, res, next) => {
+  try {
+    const { userItemId } = req.params;
+
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+      res.status(401);
+      console.log("reached here: 1", auth);
+      next({
+        error: 'InvalidTokenError',
+        message: "You must be logged in to perform this action"
+      });
+
+    } else if (auth.startsWith(prefix)) {
+      const token = auth.slice(prefix.length);
       const { id: tokenId } = jwt.verify(token, JWT_SECRET);
       console.log("userItemId API: ", userItemId);
       const userItem = await getUserItemByUserItemId({ userItemId });
@@ -161,5 +210,6 @@ router.delete('/:userItemId', async (req, res, next) => {
     next(error);
   }
 });
+
 
 module.exports = router;
