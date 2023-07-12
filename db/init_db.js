@@ -90,7 +90,7 @@ async function populateInitialData() {
 
     await createUser({
       username:"Admin",
-      password:"AdminPassword",
+      password:"Admin",
       email:"adminsemail@email.com",
       isAdmin: "true"
     })
