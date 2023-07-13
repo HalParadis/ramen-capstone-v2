@@ -31,7 +31,7 @@
   align-items: center;
   background-color: var(--pastelPink);
   width: 100%;
-  border: .5px solid black;
+  box-shadow: 2px 2px 2px 1px grey;
 }
 
 .header-links-container {
@@ -40,12 +40,19 @@
   align-items: center;
   width: 100%;
   background-color: var(--periwinkle);
+  /* border-top: 1px solid var(--pastelYellow); */
+  border-top: 1px solid var(--midnightBlue);
 }
 
 .header-links {
   width: 500px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.header-links > * {
+  width: 150px;
+  text-align: center;
 }
 
 .header-links > * {
@@ -94,7 +101,7 @@
 /* ---------------- UserForm.js ---------------- */
 
 .login-register {
-  font-size: 40px;
+  font-size: 30px;
   text-align: center;
 }
 
@@ -110,6 +117,7 @@
   border-radius: 8px;
   box-shadow: 2px 2px var(--pastelPink);
   box-shadow: 3px 2px 2px grey;
+  margin-bottom: 30px;
 }
 
 .form-login > * {
@@ -125,12 +133,15 @@
   width: 700px;
 }
 
+.login-inputs > label {
+  font-size: 17px;
+}
+
 .login-button {
   margin-top: 25px;
   border-radius: 5px;
   padding: 7px;
   font-size: 20px;
-  box-shadow: 2px 2px var(--pastelPink);
   width: 700px;
 }
 
@@ -196,7 +207,6 @@ input {
   max-width: 800px;
   padding: 50px;
   border-radius: 8px;
-  box-shadow: 2px 2px 2px 1px grey;
   background-color: white;
 }
 
@@ -310,13 +320,12 @@ img {
 }
 
 .account-buttons-container > * {
-  width: 100px;
-  font-size: 11px;
-  max-height: 30px;
+  width: 150px;
+  font-size: 13px;
 }
 
 .account-fields {
-  background-color: white;
+  background-color: var(--pastelPink);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -327,6 +336,7 @@ img {
 }
 
 .account-fields > * {
+  background-color: white;
   border: .5px solid grey;
   border-radius: 6px;
   width: 500px;
@@ -440,14 +450,36 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 22px;
 }
 
+.checkout-page-sub-container {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  border-radius: 30px;
+  padding: 20px;
+  width: 600px;
+  background-color: var(--pastelPink);
+}
 
+.checkout-page-sub-container > * {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 0 15px 15px 15px;
+  background-color: white;
+}
 
+.checkout-h3 {
+  margin: 15px 0px 15px 0px;
+}
 
-
-
-
-
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+}
 
 
