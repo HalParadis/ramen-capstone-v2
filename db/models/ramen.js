@@ -1,14 +1,14 @@
 const client = require('../client')
 const {getUsersItemsByRamenId, deleteUserItem}= require('./users_items')
 
-const createRamen = async ({ name, price, description, brand }) => {
+const createRamen = async ({ name, price, description, brand, imgURL }) => {
   try {
     const { rows: [ramen] } = await client.query(`
-      INSERT INTO ramen(name, price, description, brand)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO ramen(name, price, description, brand, "imgURL")
+      VALUES ($1, $2, $3, $4, $5)
       ON CONFLICT ( name, brand ) DO NOTHING
       RETURNING *;
-      `, [name, price, description, brand]);
+      `, [name, price, description, brand, imgURL]);
     return ramen;
   } catch (error) {
     throw error;

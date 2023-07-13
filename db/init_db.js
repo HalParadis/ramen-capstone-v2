@@ -48,6 +48,7 @@ async function buildTables() {
         name VARCHAR(255) NOT NULL,
         price VARCHAR(255) NOT NULL,
         description TEXT,
+        "imgURL" TEXT,
         brand VARCHAR(255) NOT NULL,
         UNIQUE (name, brand)
       );
@@ -104,26 +105,34 @@ async function populateInitialData() {
     const users = await getAllUsers()
     console.log("All users: ", users);
 
-    await createRamen({
-      name: "Shrimp Flavored Cup Noodles",
-      price: "$1.00",
-      description: "Amazing noodles",
-      brand: "Nissan",
-    });
+    // await createRamen({
+    //   name: "Shrimp Flavored Cup Noodles",
+    //   price: "$1.00",
+    //   description: "Amazing noodles",
+    //   brand: "Nissan",
+    // });
 
     await createRamen({
-      name: "Tonkotsu Ramen",
-      price: "$2.00",
-      description: "Extra Amazing Ramen",
-      brand: "Sapporo Ichiban",
+      name: "Samyang Ramen Soup",
+      price: "$9.99",
+      imgURL: "https://justasianfood.com/cdn/shop/files/SamyangRamenSoup-ExtraSpicy4Packs16.92oz_480g__front_360x.jpg?v=1684522683",
+      description: "Extra Spicy 4 Packs 16.92oz (480g)",
+      brand: "Samyang",
     });
 
-    await createRamen({
-      name: "Ramen",
-      price: "$2.50",
-      description: "Korean Beef Flavored Noodle Soup",
-      brand: "Gomtang",
-    });
+    // await createRamen({
+    //   name: "Tonkotsu Ramen",
+    //   price: "$2.00",
+    //   description: "Extra Amazing Ramen",
+    //   brand: "Sapporo Ichiban",
+    // });
+
+    // await createRamen({
+    //   name: "Ramen",
+    //   price: "$2.50",
+    //   description: "Korean Beef Flavored Noodle Soup",
+    //   brand: "Gomtang",
+    // });
 
 
     console.log("Finished Seeding Ramen");
@@ -140,11 +149,11 @@ async function populateInitialData() {
       count: "1",
     });
 
-    await createUserItem({
-      userId: "1",
-      ramenId: "3",
-      count: "2",
-    });
+    // await createUserItem({
+    //   userId: "1",
+    //   ramenId: "3",
+    //   count: "2",
+    // });
 
     await createUserItem({
       userId: "3",
