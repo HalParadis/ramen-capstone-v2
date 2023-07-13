@@ -118,11 +118,11 @@ const App = () => {
           <p>API Status: {APIHealth}</p>
         </Route>
 
-        <Route exact path="/products">
+        <Route path="/products">
           <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
         </Route>
 
-        <Route exact path="/products/:productId">
+        <Route path="/product/:productId">
           <ProductDetails
             selectedRamen={selectedRamen}
             fetchRamenById={fetchRamenById}
@@ -169,7 +169,7 @@ const App = () => {
         {
           user.isAdmin
             ? <>
-              <Route exact path="/admin/products">
+              <Route path="/admin/products">
                 <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
               </Route>
 
@@ -184,7 +184,7 @@ const App = () => {
             : null
         }
 
-        <Route exact path="/admin/products/:productId">
+        <Route path="/admin/product/:productId">
           <AdminProductDetails
             token={token}
             setSelectedRamen={setSelectedRamen}

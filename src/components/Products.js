@@ -24,7 +24,7 @@ const Products = ({
                 <p className="ramen-price">{ramen.price}</p>
                 {/* <h3>Picture:</h3> */}
               <div className='product-detail-link'>
-                <Link to={`${user.isAdmin ? '/admin' : ''}/products/${ramen.id}`}>
+                <Link to={`${user.isAdmin ? '/admin' : ''}/product/${ramen.id}`}>
                   View Product Details
                 </Link>
                 </div>
