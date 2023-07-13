@@ -12,6 +12,7 @@ const AdminProductDetails = ({token, fetchRamen}) => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [brand, setBrand] = useState("");
+  const [imgURL, setImgURL] = useState("")
   
 
   const history = useHistory();
@@ -23,6 +24,7 @@ const AdminProductDetails = ({token, fetchRamen}) => {
     setPrice(ramen.price);
     setDescription(ramen.description);
     setBrand(ramen.brand);
+    setImgURL(ramen.imgURL)
     }
   }
 
@@ -40,7 +42,7 @@ const handleDelete = async (productId) => {
 
 
 const updateRamen = async () =>{
-  const newRam = await updateRamenFromAPI({id: productId, token, name, price, description, brand})
+  const newRam = await updateRamenFromAPI({id: productId, token, name, price, description, brand, imgURL})
   if (newRam.error) {
     setErrorMessage(result.message);
     console.error(errorMessage)
@@ -50,6 +52,7 @@ const updateRamen = async () =>{
     setPrice(newRam.price);
     setDescription(newRam.description);
     setBrand(newRam.brand);
+    setImgURL(newRam.imgURL)
     setIsEditMode(false);
     await fetchRamen()
   }
@@ -99,6 +102,13 @@ const handleSubmit = async (event) =>{
     value={brand}
     onChange={(event) => setBrand(event.target.value)}
   />
+  <label htmlFor="image">ImageURL</label>
+  <input
+    type="text"
+    name="image"
+    value={imgURL}
+    onChange={(event) => setImgURL(event.target.value)}
+  />
   <button type="submit">Submit</button>
 </form>:
   <div>
@@ -106,6 +116,7 @@ const handleSubmit = async (event) =>{
       <h3>Price: {price} </h3>
       <h3>Brand: {brand} </h3>
       <p>Description: {description} </p>
+      <img src={imgURL} alt={`Photo of ${name}`}/>
       <button 
         type='button'
         onClick={() => setIsEditMode(!isEditMode)}

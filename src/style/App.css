@@ -42,10 +42,6 @@
   margin: 1em;
 }
 
-img {
-  width: 150px;
-  
-}
 
 .img-header-container {
   display: flex;
@@ -98,22 +94,39 @@ input {
 
 .product-list {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  flex-grow: 1;
+  margin: 50px;
 }
 
 .product-list > * {
-
+  gap: 10px;
+  flex-grow: 1;
+  flex: 0 0 30%;
 }
 
 .each-product {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: top;
+  flex-grow: 1;
+  min-width: 0;
   border: 2px solid black;
+  border-radius: 5px;
   padding: 10px;
+  background-color: var(--periwinkle);
 }
 
-.ramen-name {
+/*.ramen-name {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   font-size: 30px;
-}
+}*/
 
 .ramen-price {
   font-size: 25px;
@@ -178,6 +191,10 @@ width: 100%;
 .noodle-emoji {
   font-size: 50px;
 }
+img {
+  width: 100px;
+}
+
 /* .changeCountField {
   display: flex;
 } */

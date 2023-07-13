@@ -22,6 +22,7 @@ const ProductDetails = ({
       <h3><span className='product-info'>Price: </span>{selectedRamen && selectedRamen.price} </h3>
       <h3><span className='product-info'>Brand: </span>{selectedRamen && selectedRamen.brand} </h3>
       <p><span className='product-info'>Description: </span>{selectedRamen && selectedRamen.description} </p>
+      <img src={selectedRamen && selectedRamen.imgURL} />
 
       <div className='changeCountField' >
         <button

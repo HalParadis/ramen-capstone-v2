@@ -15,6 +15,7 @@ const ProductsAdmin = ({allRamen, fetchRamen}) =>{
               <p>Price: {ramen.price}</p>
               <p>Brand: {ramen.brand}</p>
               <p>Description: {ramen.description}</p>
+              <img src={ramen.imgURL} alt={`Photo of ${ramen.name}`}/>
               {/* <h3>Picture:</h3> */}
               <Link to={`/admin/products/${ramen.id}`}>
                 View Product Details
