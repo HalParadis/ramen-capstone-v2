@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 
 import {
   Products,
   ProductDetails,
   UserForm,
-  ProductsAdmin,
   UsersAdmin,
   AdminCreateProduct,
   Account,
@@ -33,8 +32,8 @@ const App = () => {
   const [APIHealth, setAPIHealth] = useState("");
   const [allRamen, setAllRamen] = useState([]);
   const [selectedRamen, setSelectedRamen] = useState(undefined);
-  const [token, setToken] =  useState( localStorage.getItem("token") ?? "");
-  const [allUsers, setAllUsers] = useState( [] );
+  const [token, setToken] = useState(localStorage.getItem("token") ?? "");
+  const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {});
   const [cartItems, setCartItems] = useState([]);
 
@@ -68,7 +67,7 @@ const App = () => {
     // second, after you've defined your getter above
     // invoke it immediately after its declaration, inside the useEffect callback
     getAPIStatus();
-    
+
     fetchRamen();
     fetchUsers();
 
@@ -87,118 +86,122 @@ const App = () => {
   return (
     <div className='app-container'>
       <div className="all-but-footer">
-      <header className='app-header'>
-        <div className="img-header-container"> 
-          {/* <img src="https://media.discordapp.net/attachments/1073475284197711905/1128588836990103643/naruto-flexible-mousepad-naruto-ramen.png?width=916&height=916" /> */}
-          <span className="fish-cake">🍥</span>
-          <h1 className="header-text"> We Love Ramen! </h1>
-        </div> 
-        <div className="header-links-container">
-        <div className='header-links'>
-          {user.isAdmin 
-          ? <>
-          <Link to='/admin/products'>Ramen</Link>
-          <Link to='/admin/users'>Users</Link>
-          <Link to='/account'>Account</Link> 
-          </> :<>
-          <Link to='/products'>Ramen</Link> 
-          {
-            token && user.username
-              ? <>
-                <Link to='/account'>Account</Link> 
-                <Link to='/cart'>Cart</Link>
-                </>
-              : <Link to='/users/login'>Login</Link>
-          }</>}
+        <header className='app-header'>
+          <div className="img-header-container">
+            {/* <img src="https://media.discordapp.net/attachments/1073475284197711905/1128588836990103643/naruto-flexible-mousepad-naruto-ramen.png?width=916&height=916" /> */}
+            <span className="fish-cake">🍥</span>
+            <h1 className="header-text"> We Love Ramen! </h1>
           </div>
-        </div>
-      </header>
+          <div className="header-links-container">
+            <div className='header-links'>
+              {user.isAdmin
+                ? <>
+                  <NavLink activeClassName='selected' className='link' to='/admin/products'>Ramen</NavLink>
+                  <NavLink activeClassName='selected' className='link' to='/admin/users'>Users</NavLink>
+                  <NavLink activeClassName='selected' className='link' to='/account'>Account</NavLink>
+                </> : <>
+                  <NavLink activeClassName='selected' className='link' to='/products'>Ramen</NavLink>
+                  {
+                    token && user.username
+                      ? <>
+                        <NavLink activeClassName='selected' className='link' to='/account'>Account</NavLink>
+                        <NavLink activeClassName='selected' className='link' to='/cart'>Cart</NavLink>
+                      </>
+                      : <NavLink activeClassName='selected' className='link' to='/users/login'>Login</NavLink>
+                  }</>}
+            </div>
+          </div>
+        </header>
 
-      <Route exact path='/'>
-        <h1>Hello, World!</h1>
-        <p>API Status: {APIHealth}</p>
-      </Route>
+        <Route exact path='/'>
+          <h1>Hello, World!</h1>
+          <p>API Status: {APIHealth}</p>
+        </Route>
 
-      <Route exact path="/products">
-        <Products allRamen={allRamen} fetchRamen={fetchRamen} />
-      </Route>
+        <Route path="/products">
+          <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
+        </Route>
 
-      <Route exact path="/products/:productId">
-        <ProductDetails 
-          selectedRamen={selectedRamen}
-          fetchRamenById={fetchRamenById}
-          token={token}/>
-      </Route>
+        <Route path="/product/:productId">
+          <ProductDetails
+            selectedRamen={selectedRamen}
+            fetchRamenById={fetchRamenById}
+            token={token}
+            user={user}
+          />
+        </Route>
 
-      <Route path="/users/:actionType">
-        <UserForm setToken={setToken} token={token} setUser={setUser} />
-      </Route>
+        <Route path="/users/:actionType">
+          <UserForm setToken={setToken} token={token} setUser={setUser} />
+        </Route>
 
-      <Route path='/account'>
-        <Account
-          setToken={setToken}
-          token={token}
-          setUser={setUser}
-          user={user}
-        />
-      </Route>
+        <Route path='/account'>
+          <Account
+            setToken={setToken}
+            token={token}
+            setUser={setUser}
+            user={user}
+          />
+        </Route>
 
-      <Route path='/cart'>
-        <Cart
-          token={token}
-          user={user}
-          fetchRamenById={fetchRamenById}
-        />
-      </Route>
+        <Route path='/cart'>
+          <Cart
+            token={token}
+            user={user}
+            fetchRamenById={fetchRamenById}
+          />
+        </Route>
 
-      <Route path='/checkout'>
-        <Checkout 
-          token={token}
-          fetchRamenById={fetchRamenById}
-          user={user}
-          // fetchCartItems={fetchCartItems}
-          cartItems={cartItems}
-        />
-      </Route>
+        <Route path='/checkout'>
+          <Checkout
+            token={token}
+            fetchRamenById={fetchRamenById}
+            user={user}
+            // fetchCartItems={fetchCartItems}
+            cartItems={cartItems}
+          />
+        </Route>
 
-      <Route path='/thank_you!'>
-        <h2>Thank You For Choosing To Shop With Us Today!</h2>
-      </Route>
+        <Route path='/thank_you!'>
+          <h2>Thank You For Choosing To Shop With Us Today!</h2>
+        </Route>
 
-      {
-        user.isAdmin 
-        ? <>
-          <Route exact path="/admin/products">
-            <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
-          </Route>
+        {
+          user.isAdmin
+            ? <>
+              <Route path="/admin/products">
+                <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
+              </Route>
 
-          <Route path="/admin/users">
-            <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers} 
-              selectedRamen={selectedRamen}
-              fetchRamenById={fetchRamenById}
-              token={token}
-            />
-          </Route> 
-        </>
-        : null 
-      }
+              <Route path="/admin/users">
+                <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers}
+                  selectedRamen={selectedRamen}
+                  fetchRamenById={fetchRamenById}
+                  token={token}
+                />
+              </Route>
+            </>
+            : null
+        }
 
-      <Route exact path="/admin/products/:productId">
-        <AdminProductDetails
-          token={token}
-          setSelectedRamen={setSelectedRamen}
-          selectedRamen={selectedRamen}
-          fetchRamenById={fetchRamenById}
-          fetchRamen={fetchRamen}
-          setAllRamen={setAllRamen}
-        />
-      </Route>
-      <Route exact path="/admin/create">
-        <AdminCreateProduct token={token} fetchRamen={fetchRamen}/>
-      </Route>
+        <Route path="/admin/product/:productId">
+          <AdminProductDetails
+            token={token}
+            setSelectedRamen={setSelectedRamen}
+            selectedRamen={selectedRamen}
+            fetchRamenById={fetchRamenById}
+            fetchRamen={fetchRamen}
+            setAllRamen={setAllRamen}
+          />
+        </Route>
+        <Route exact path="/admin/create">
+          <AdminCreateProduct token={token} fetchRamen={fetchRamen} />
+        </Route>
       </div>
+
       <footer className="footer">
-      <p className="footer-text">Enjoy Your Ramen!</p>
+        <p className="footer-text">Enjoy Your Ramen!</p>
+        <small>This site was made for demonstration purposes only. No actual products are sold on this site.</small>
       </footer>
     </div>
   );

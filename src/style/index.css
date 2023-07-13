@@ -15,6 +15,17 @@
   --pastelPink: #F8C8DC;
 }
 
+.link {
+  border: 1px solid black;
+  border-radius: 100px;
+  padding: 12px 20px 12px 20px;
+}
+
+.selected {
+  background-color: var(--pastelYellow);
+  box-shadow: 2px 2px 2px 1px grey;
+}
+
 html {
   touch-action: manipulation;
 }
@@ -25,4 +36,13 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: var(--pastelYellow);
+}
+
+button {
+  padding: 3px 7px 3px 7px;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: var(--pastelPink);
 }

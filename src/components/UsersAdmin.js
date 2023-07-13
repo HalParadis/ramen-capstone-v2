@@ -6,19 +6,17 @@ const UsersAdmin = ({allUsers, fetchUsers}) =>{
     fetchUsers();
   }, [])
 
-  return <>
+  return <div className='users-admin-page'>
   {allUsers.map((users, idx) => {
     return (
-      <div key={users.id ?? idx}>
+      <div className='user' key={users.id ?? idx}>
         <h3>Name: {users.username}</h3>
         <p>Email: {users.email}</p>
-        <p>Address: {users.address}</p>
-        {/* <h3>Picture:</h3> */}
-        <hr></hr>
+        <p>Address: {users.address ?? 'N/A'}</p>
       </div>
     )
   })}
-  </>
+  </div>
 }
 
 export default UsersAdmin;

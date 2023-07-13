@@ -61,61 +61,64 @@ const Checkout = ({
   }, [token])
 
   return (
-    <>
+    <div className='checkout-page'>
       <h2>Checkout</h2>
 
-      <form>
-        <h3>Shipping Address</h3>
-        <input 
-          type='text'
-          name='address'
-          value={address}
-          onChange={(event) => setAddress(event.target.value)}
-        />
-      </form>
+      <div className='checkout-page-sub-container'>
+        <form className='shipping-address-form'>
+          <h3 className='checkout-h3'>Shipping Address</h3>
+          <input 
+            type='text'
+            name='address'
+            value={address}
+            onChange={(event) => setAddress(event.target.value)}
+          />
+        </form>
 
-      <div>
-        <h3>Cart Items</h3>
-        {
-          cartItems &&
-          cartItems.map((item, idx) => {
-            return ( 
-              <div key={item.id ?? idx}>
-                <span>Name: {item.name} </span>
-                <span>Brand: {item.brand} </span>
-                <span>Price: {item.price} </span>
-                <span>Count: {item.count}</span>
-              </div>
-            )
-          })
-        }
+        <div className='cart-items-container'>
+          <h3 className='checkout-h3'>Cart Items</h3>
+          {
+            cartItems &&
+            cartItems.map((item, idx) => {
+              return ( 
+                <div className='checkout-item' key={item.id ?? idx}>
+                  <div>
+                    <span>{item.count} </span>
+                    <span>{item.brand} </span>
+                    <span>{item.name} </span>
+                  </div>
+                  <span>Unit Price: {item.price} </span>
+                </div>
+              )
+            })
+          }
+        </div>
+
+        <form className='payment-info-container'>
+          <h3 className='checkout-h3'>Payment Information</h3>
+          <lable htmlFor='cardNumber'>Card Number: </lable>
+          <input 
+            type='text'
+            name='cardNumber'
+            value='xxxx-xxxx-xxxx-1234'
+            readOnly='true'
+          />
+          <lable htmlFor='cardName'>Name On Card: </lable>
+          <input 
+            type='text'
+            name='cardName'
+            value='Jane Doe'
+            readOnly='true'
+          />
+        </form>
       </div>
-
-      <form>
-        <h3>Payment Information</h3>
-        <lable htmlFor='cardNumber'>Card Number: </lable>
-        <input 
-          type='text'
-          name='cardNumber'
-          value='xxxx-xxxx-xxxx-1234'
-          readOnly='true'
-        />
-        <lable htmlFor='cardName'>Name On Card: </lable>
-        <input 
-          type='text'
-          name='cardName'
-          value='Jane Doe'
-          readOnly='true'
-        />
-      </form>
-
       <h3>Total Price: {changeToCurrency.format(totalPrice)}</h3>
 
       <button
         type="button"
         onClick={handleCheckout}
       >Place Your Order</button>
-    </>
+    </div>
   )
 }
 

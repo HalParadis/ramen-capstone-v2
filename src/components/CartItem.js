@@ -30,33 +30,38 @@ const CartItem = ({
   }, [count])
 
   return (
-    <div className='cartItem' key={item.id ?? idx}>
-      <span>Name: {item.name}</span>
-      <span>Unit Price: {item.price}</span>
-
-      <div className='changeCountField' >
-        <button
-          type='button'
-          onClick={() => {
-            if (count > 1) {
-              setCount(count - 1);
-            }
-          }}
-        >-</button>
-        <span>{count}</span>
-        <button
-          type='button'
-          onClick={() => {
-            setCount(count + 1);
-          }}
-        >+</button>
+    <div className='cart-item' key={item.id ?? idx}>
+      <div className='cart-item-name-and-price'>
+        <div>{item.name}</div>
+        <div>Unit Price: {item.price}</div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => handleDelete(item.id)}
-      >Delete</button>
+      <div className='cart-item-buttons'>
+        <div className='change-count-field' >
+          <button
+            className="change-count-field-button"
+            type='button'
+            onClick={() => {
+              if (count > 1) {
+                setCount(count - 1);
+              }
+            }}
+          >-</button>
+          <span className="product-count">{count}</span>
+          <button
+            className="change-count-field-button"
+            type='button'
+            onClick={() => {
+              setCount(count + 1);
+            }}
+          >+</button>
+        </div>
 
+        <button
+          type="button"
+          onClick={() => handleDelete(item.id)}
+        >Delete</button>
+      </div>
     </div>
   )
 }

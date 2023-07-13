@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Products = ({
   allRamen,
-  fetchRamen
+  fetchRamen,
+  user
 }) => {
 
   useEffect(() => {
@@ -12,7 +13,8 @@ const Products = ({
 
 
   return (
-    <>
+    <div className='products-page'>
+      <button><Link to="/admin/create">Add Product</Link></button>
       <div className='product-list'>
         {
           allRamen?.map((ramen, idx) => {
@@ -23,7 +25,7 @@ const Products = ({
                 <p className="ramen-price">{ramen.price}</p>
                 {/* <h3>Picture:</h3> */}
               <div className='product-detail-link'>
-                <Link to={`/products/${ramen.id}`}>
+                <Link to={`${user.isAdmin ? '/admin' : ''}/product/${ramen.id}`}>
                   View Product Details
                 </Link>
                 </div>
@@ -32,7 +34,7 @@ const Products = ({
           })
         }
       </div>
-    </>
+    </div>
   )
 }
 
