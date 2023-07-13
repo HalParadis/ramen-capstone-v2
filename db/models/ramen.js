@@ -6,7 +6,6 @@ const createRamen = async ({ name, price, description, brand, imgURL }) => {
     const { rows: [ramen] } = await client.query(`
       INSERT INTO ramen(name, price, description, brand, "imgURL")
       VALUES ($1, $2, $3, $4, $5)
-      ON CONFLICT ( name, brand ) DO NOTHING
       RETURNING *;
       `, [name, price, description, brand, imgURL]);
     return ramen;
