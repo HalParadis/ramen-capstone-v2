@@ -17,7 +17,7 @@
   color: var(--midnightBlue);
   padding: .125em;
   margin: 0;
-  font-family: 'Gloria Hallelujah', cursive;
+  font-family: 'Gloria Hallelujah', cursive; 
   font-size: 3.5em;
 }
 
@@ -34,8 +34,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--periwinkle);
   width: 100%;
+  background-color: var(--periwinkle);
 }
 
 .header-links > * {
@@ -104,7 +104,7 @@ input {
 .product-list > * {
   gap: 10px;
   flex-grow: 1;
-  flex: 0 0 30%;
+  flex: 0 0 300px;
 }
 
 .each-product {
@@ -112,24 +112,22 @@ input {
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: top;
-  flex-grow: 1;
+  justify-content: space-around;
+  flex-grow: 0;
   min-width: 0;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 5px;
   padding: 10px;
-  background-color: var(--periwinkle);
+  background-color: white;
 }
 
-/*.ramen-name {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  font-size: 30px;
-}*/
+.ramen-name {
+  margin-top: 0px;
+  text-align: center;
+}
 
 .ramen-price {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .footer {
@@ -165,11 +163,13 @@ width: 100%;
   justify-content: center;
 }
 
-.product-details {
+.product-details-page {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   justify-items: center;
   align-items: center;
+  gap: 30px;
   border: 2px solid black;
   margin: auto;
   margin-top: 30px;
@@ -177,22 +177,80 @@ width: 100%;
   padding: 50px;
   border-radius: 8px;
   box-shadow: 2px 2px var(--pastelPink);
+  background-color: white;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.product-all-but-img {
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+width: 200px;
+flex-shrink: 0;
+margin: auto;
+}
+
+.product-count {
+  border: .5px solid black;
+  width: 30px;
+  text-align: center;
+}
+
+.product-page-name {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.count-and-add-to-cart{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.changeCountField{
+  display: flex;
+  align-content: center;
+  width: 90px;
+}
+.changeCountField-button{
+  margin: 0px;
+  width: 30px;
 }
 
 .add-to-cart-button {
   width: 100px;
-  margin-left: 20px;
+  height: 30px;
 }
 
-.product-info {
-  font-size: 25px
+.changeCountField-button:hover {
+  background-color: var(--pastelPink);
+}
+
+.add-to-cart-button:hover {
+  background-color: var(--pastelPink);
 }
 
 .noodle-emoji {
   font-size: 50px;
 }
 img {
-  width: 100px;
+  width: 165px;
+}
+
+.product-page-img {
+  width: 300px;
+  margin-left: 0px;
+  border: .5px solid grey;
+  margin-right: 35px;
 }
 
 /* .changeCountField {

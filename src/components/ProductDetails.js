@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { postUserItemAPI } from '../axios-services';
-import { useParams, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import React, { useEffect, useState } from "react";
+import { postUserItemAPI } from "../axios-services";
+import {
+  useParams,
+  useHistory,
+} from "react-router-dom/cjs/react-router-dom.min";
 
-const ProductDetails = ({ 
-  selectedRamen,
-  fetchRamenById,
-  token
-}) => {
+const ProductDetails = ({ selectedRamen, fetchRamenById, token }) => {
   const params = useParams();
   const history = useHistory();
   const { productId } = params;
@@ -17,36 +16,61 @@ const ProductDetails = ({
   }, []);
 
   return (
-    <div className='product-details'>
-      <h2><span className='product-info'>Name: </span>{selectedRamen && selectedRamen.name} </h2>
-      <h3><span className='product-info'>Price: </span>{selectedRamen && selectedRamen.price} </h3>
-      <h3><span className='product-info'>Brand: </span>{selectedRamen && selectedRamen.brand} </h3>
-      <p><span className='product-info'>Description: </span>{selectedRamen && selectedRamen.description} </p>
-      <img src={selectedRamen && selectedRamen.imgURL} />
-
-      <div className='changeCountField' >
-        <button
-          type='button'
-          onClick={() => count > 1 && setCount(count - 1)}
-        >-</button>
-        <span>{count}</span>
-        <button
-          type='button'
-          onClick={() => setCount(count + 1)}
-        >+</button>
+    <div className="product-details-page">
+      <div className="product-details">
+        <img
+          className="product-page-img"
+          src={selectedRamen && selectedRamen.imgURL}
+        />
+        <div className="product-all-but-img">
+          <h2 className="product-page-name">
+            {selectedRamen && selectedRamen.name}{" "}
+          </h2>
+          <h3 className="product-page-name">
+            {selectedRamen && selectedRamen.brand}{" "}
+          </h3>
+          <p className="product-page-name">
+            {selectedRamen && selectedRamen.description}{" "}
+          </p>
+          <h3 className="product-page-name">
+            {selectedRamen && selectedRamen.price}{" "}
+          </h3>
+          <div className="count-and-add-to-cart">
+            <div className="changeCountField">
+              <button
+                className="changeCountField-button"
+                type="button"
+                onClick={() => count > 1 && setCount(count - 1)}
+              >
+                -
+              </button>
+              <span className="product-count">{count}</span>
+              <button
+                className="changeCountField-button"
+                type="button"
+                onClick={() => !(count > 98) && setCount(count + 1)}
+              >
+                +
+              </button>
+            </div>
+            <span>
+              <button
+                className="add-to-cart-button"
+                type="button"
+                onClick={() => {
+                  postUserItemAPI({ count, token, ramenId: selectedRamen.id });
+                  history.push("/cart");
+                }}
+              >
+                Add To Cart
+              </button>
+              {/* <span className='noodle-emoji'>🍜</span> */}
+            </span>
+          </div>
+        </div>
       </div>
-      <span>
-      <button className='add-to-cart-button'
-        type='button'
-        onClick={() => {
-          postUserItemAPI({count, token, ramenId: selectedRamen.id})
-          history.push('/cart');
-        }}
-      >Add To Cart</button>
-      <span className='noodle-emoji'>🍜</span>
-      </span>
     </div>
-  )
-}
+  );
+};
 
 export default ProductDetails;

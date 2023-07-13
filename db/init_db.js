@@ -216,6 +216,14 @@ async function populateInitialData() {
       brand: "Samyang",
     });
 
+    await createRamen({
+      name: "Hot Chicken Ramen Jjajang Flavor",
+      price: "$3.99",
+      imgURL: "https://justasianfood.com/cdn/shop/products/SamyangHotChickenRamenJjajangFlavor-BigBowl3.7oz_105g__front_1024x1024@2x.jpg?v=1671826095",
+      description: "Big Bowl 3.7oz (105g)",
+      brand: "Samyang"
+    })
+
     // await createRamen({
     //   name: "",
     //   price: "",

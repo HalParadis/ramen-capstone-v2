@@ -18,9 +18,9 @@ const Products = ({
           allRamen?.map((ramen, idx) => {
             return (
               <div className="each-product" key={ramen.id ?? idx}>
-                <h3 className="ramen-name">Name: {ramen.name}</h3>
-                <p className="ramen-price"> Price: {ramen.price}</p>
+                <h3 className="ramen-name">{ramen.name}</h3>
                 <img src={ramen.imgURL} alt={`photo of ${ramen.name}`}/>
+                <p className="ramen-price">{ramen.price}</p>
                 {/* <h3>Picture:</h3> */}
               <div className='product-detail-link'>
                 <Link to={`/products/${ramen.id}`}>
