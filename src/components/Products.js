@@ -13,7 +13,8 @@ const Products = ({
 
 
   return (
-    <>
+    <div className='products-page'>
+      <button><Link to="/admin/create">Add Product</Link></button>
       <div className='product-list'>
         {
           allRamen?.map((ramen, idx) => {
@@ -33,7 +34,7 @@ const Products = ({
           })
         }
       </div>
-    </>
+    </div>
   )
 }
 
