@@ -13,22 +13,24 @@ const Products = ({
 
   return (
     <>
-      {
-        allRamen?.map((ramen, idx) => {
-          return (
-            <div key={ramen.id ?? idx}>
-              <h3>Name: {ramen.name}</h3>
-              <p>Price: {ramen.price}</p>
-              {/* <h3>Picture:</h3> */}
+      <div className='product-list'>
+        {
+          allRamen?.map((ramen, idx) => {
+            return (
+              <div className="each-product" key={ramen.id ?? idx}>
+                <h3 className="ramen-name">Name: {ramen.name}</h3>
+                <p className="ramen-price"> Price: {ramen.price}</p>
+                {/* <h3>Picture:</h3> */}
 
-              <Link to={`/products/${ramen.id}`}>
-                View Product Details
-              </Link>
-              <hr></hr>
-            </div>
-          )
-        })
-      }
+                <Link to={`/products/${ramen.id}`}>
+                  View Product Details
+                </Link>
+                
+              </div>
+            )
+          })
+        }
+      </div>
     </>
   )
 }

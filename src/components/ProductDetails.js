@@ -17,11 +17,11 @@ const ProductDetails = ({
   }, []);
 
   return (
-    <div>
-      <h2>Name: {selectedRamen && selectedRamen.name} </h2>
-      <h3>Price: {selectedRamen && selectedRamen.price} </h3>
-      <h3>Brand: {selectedRamen && selectedRamen.brand} </h3>
-      <p>Description: {selectedRamen && selectedRamen.description} </p>
+    <div className='product-details'>
+      <h2><span className='product-info'>Name: </span>{selectedRamen && selectedRamen.name} </h2>
+      <h3><span className='product-info'>Price: </span>{selectedRamen && selectedRamen.price} </h3>
+      <h3><span className='product-info'>Brand: </span>{selectedRamen && selectedRamen.brand} </h3>
+      <p><span className='product-info'>Description: </span>{selectedRamen && selectedRamen.description} </p>
 
       <div className='changeCountField' >
         <button
@@ -34,14 +34,16 @@ const ProductDetails = ({
           onClick={() => setCount(count + 1)}
         >+</button>
       </div>
-      
-      <button
+      <span>
+      <button className='add-to-cart-button'
         type='button'
         onClick={() => {
           postUserItemAPI({count, token, ramenId: selectedRamen.id})
           history.push('/cart');
         }}
       >Add To Cart</button>
+      <span className='noodle-emoji'>🍜</span>
+      </span>
     </div>
   )
 }
