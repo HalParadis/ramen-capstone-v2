@@ -39,8 +39,15 @@ const Cart = ({
 
 
   return (
-    <>
-      <h2>{user.username}'s Cart</h2>
+    <div className='cart-page'>
+      <h2 className='cart-header-text'>My Cart</h2>
+      
+      <button
+        className='checkout-button'
+        type="button"
+        onClick={() => history.push('/checkout')}
+      >Checkout</button>
+
       {
         cartItems &&
         cartItems.map((item, idx) => {
@@ -55,13 +62,7 @@ const Cart = ({
           )
         })
       }
-
-      <button
-        type="button"
-        onClick={() => history.push('/checkout')}
-      >Checkout</button>
-
-    </>
+    </div>
   )
 }
 

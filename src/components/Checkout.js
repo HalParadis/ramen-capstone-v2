@@ -61,10 +61,10 @@ const Checkout = ({
   }, [token])
 
   return (
-    <>
+    <div className='checkout-page'>
       <h2>Checkout</h2>
 
-      <form>
+      <form className='checkout-form'>
         <h3>Shipping Address</h3>
         <input 
           type='text'
@@ -115,7 +115,7 @@ const Checkout = ({
         type="button"
         onClick={handleCheckout}
       >Place Your Order</button>
-    </>
+    </div>
   )
 }
 

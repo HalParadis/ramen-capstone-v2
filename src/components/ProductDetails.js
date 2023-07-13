@@ -36,9 +36,9 @@ const ProductDetails = ({ selectedRamen, fetchRamenById, token }) => {
             {selectedRamen && selectedRamen.price}{" "}
           </h3>
           <div className="count-and-add-to-cart">
-            <div className="changeCountField">
+            <div className="change-count-field">
               <button
-                className="changeCountField-button"
+                className="change-count-field-button"
                 type="button"
                 onClick={() => count > 1 && setCount(count - 1)}
               >
@@ -46,7 +46,7 @@ const ProductDetails = ({ selectedRamen, fetchRamenById, token }) => {
               </button>
               <span className="product-count">{count}</span>
               <button
-                className="changeCountField-button"
+                className="change-count-field-button"
                 type="button"
                 onClick={() => !(count > 98) && setCount(count + 1)}
               >
