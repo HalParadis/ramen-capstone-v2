@@ -5,7 +5,6 @@ import {
   Products,
   ProductDetails,
   UserForm,
-  ProductsAdmin,
   UsersAdmin,
   AdminCreateProduct,
   Account,
@@ -120,14 +119,16 @@ const App = () => {
         </Route>
 
         <Route exact path="/products">
-          <Products allRamen={allRamen} fetchRamen={fetchRamen} />
+          <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
         </Route>
 
         <Route exact path="/products/:productId">
           <ProductDetails
             selectedRamen={selectedRamen}
             fetchRamenById={fetchRamenById}
-            token={token} />
+            token={token}
+            user={user}
+          />
         </Route>
 
         <Route path="/users/:actionType">
@@ -169,7 +170,7 @@ const App = () => {
           user.isAdmin
             ? <>
               <Route exact path="/admin/products">
-                <ProductsAdmin allRamen={allRamen} fetchRamen={fetchRamen} />
+                <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
               </Route>
 
               <Route path="/admin/users">

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Products = ({
   allRamen,
-  fetchRamen
+  fetchRamen,
+  user
 }) => {
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Products = ({
                 <p className="ramen-price">{ramen.price}</p>
                 {/* <h3>Picture:</h3> */}
               <div className='product-detail-link'>
-                <Link to={`/products/${ramen.id}`}>
+                <Link to={`${user.isAdmin ? '/admin' : ''}/products/${ramen.id}`}>
                   View Product Details
                 </Link>
                 </div>

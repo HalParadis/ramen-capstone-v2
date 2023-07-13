@@ -228,6 +228,10 @@ flex-shrink: 0;
 margin: auto;
 }
 
+.product-all-but-img > h2 {
+  margin-top: 0;
+}
+
 .product-count {
   border: .5px solid black;
   width: 30px;
@@ -483,3 +487,25 @@ img {
 }
 
 
+/* ---------------- AdminProductDetails.js ---------------- */
+
+.admin-edit-delete-buttons > * {
+  width: 150px;
+  font-size: 13px;
+  margin: 10px;
+}
+
+.product-edit-form {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+.product-edit-form > * {
+  margin: 10px;
+}
+
+.product-edit-input-container {
+  display: flex;
+  flex-direction: column;
+}
