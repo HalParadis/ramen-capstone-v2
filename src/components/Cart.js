@@ -41,7 +41,6 @@ const Cart = ({
   return (
     <>
       <h2>{user.username}'s Cart</h2>
-
       {
         cartItems &&
         cartItems.map((item, idx) => {

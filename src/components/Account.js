@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useHistory, Link } from "react-router-dom/cjs/react-router-dom.min";
 import {
-  useHistory,
-  Link,
-} from "react-router-dom/cjs/react-router-dom.min";
-import { 
-  deleteUserAPI, 
-  getUserByIdAPI, 
-  patchUserAPI, 
-  deleteUserItemAPI, 
-  getUsersItemsByUserIdAPI 
+  deleteUserAPI,
+  getUserByIdAPI,
+  patchUserAPI,
+  deleteUserItemAPI,
+  getUsersItemsByUserIdAPI,
 } from "../axios-services";
 
 const Account = ({ setToken, token, user, setUser }) => {
@@ -26,11 +23,10 @@ const Account = ({ setToken, token, user, setUser }) => {
     const result = await getUserByIdAPI({ userId, token });
     if (result.error) {
       setErrorMessage(result.message);
-    }
-    else {
+    } else {
       setUser(result);
     }
-  }
+  };
 
   const patchUser = async () => {
     const result = await patchUserAPI({
@@ -38,65 +34,88 @@ const Account = ({ setToken, token, user, setUser }) => {
       token,
       username,
       email,
-      address
+      address,
     });
     if (result.error) {
       setErrorMessage(result.message);
-    }
-    else {
+    } else {
       setUser(result);
       setIsEditMode(false);
     }
-  }
+  };
 
   const deleteUser = async () => {
-    const usersItems = await getUsersItemsByUserIdAPI({userId, token});
+    const usersItems = await getUsersItemsByUserIdAPI({ userId, token });
 
-    Promise.all(usersItems.map(async (userItem) => {
-      return await deleteUserItemAPI({ userItemId: userItem.id, token});
-    }));
-    
-    const result = await deleteUserAPI({userId, token});
+    Promise.all(
+      usersItems.map(async (userItem) => {
+        return await deleteUserItemAPI({ userItemId: userItem.id, token });
+      })
+    );
+
+    const result = await deleteUserAPI({ userId, token });
     if (result.error) {
       setErrorMessage(result.message);
+    } else {
+      setToken("");
     }
-    else {
-      setToken('');
-    }
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     await patchUser();
     await fetchUser();
-  }
+  };
 
   useEffect(() => {
     if (!token) {
       history.push("/users/login");
-    }
-    else {
+    } else {
       fetchUser();
     }
-  }, [token])
+  }, [token]);
 
   return (
     <>
-    <div className="account-page">
-        <h2>Account</h2>
-        <button 
-          type='button'
-          onClick={() => setIsEditMode(!isEditMode)}
-        >{
-          isEditMode
-            ? 'Exit Edit Mode'
-            : 'Update User Info'
-        }</button>
+      <div className="account-page">
+        <header className="account-header">
+          <h2 className="account-text">Account</h2>
+
+          <div className="account-buttons-container">
+            <button type="button" onClick={() => setIsEditMode(!isEditMode)}>
+              {isEditMode ? "Exit Edit Mode" : "Update User Info"}
+            </button>
+
+            <button type="button" onClick={() => setToken("")}>
+              Log Out
+            </button>
+
+            {!isDeleteMode && (
+              <button type="button" onClick={() => setIsDeleteMode(true)}>
+                Delete Account
+              </button>
+            )}
+          </div>
+        </header>
+        {isDeleteMode && (
+          <div className="delete-confirmation-container">
+            Are You Sure? 🤨
+            <span className="delete-confirmation-buttons">
+              <button type="button" onClick={() => setIsDeleteMode(false)}>
+                Cancel
+              </button>
+              <button type="button" onClick={deleteUser}>
+                Delete
+              </button>
+            </span>
+          </div>
+        )}
         {errorMessage && <p>{errorMessage}</p>}
-        {
-          isEditMode
-            ? <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
+        {isEditMode ? (
+          <form className="account-fields" onSubmit={handleSubmit}>
+            <div className="account-field-input-container">
+              <div className="account-field-input">
+                <label htmlFor="username">Username: </label>
                 <input
                   type="text"
                   name="username"
@@ -106,7 +125,11 @@ const Account = ({ setToken, token, user, setUser }) => {
                   maxLength="20"
                   required
                 />
-                <label htmlFor="email">Email</label>
+              </div>
+            </div>
+            <div className="account-field-input-container">
+              <div className="account-field-input">
+                <label htmlFor="email">Email: </label>
                 <input
                   type="email"
                   name="email"
@@ -116,7 +139,11 @@ const Account = ({ setToken, token, user, setUser }) => {
                   maxLength="30"
                   required
                 />
-                <label htmlFor="address">Address</label>
+              </div>
+            </div>
+            <div className="account-field-input-container">
+              <div className="account-field-input">
+                <label htmlFor="address">Address: </label>
                 <input
                   type="text"
                   name="address"
@@ -125,42 +152,20 @@ const Account = ({ setToken, token, user, setUser }) => {
                   minLength="3"
                   maxLength="40"
                 />
-                <button type="submit">Submit</button>
-              </form>
-
-            : <div>
-                <h3>Username: {user.username}</h3>
-                <h3>Email: {user.email}</h3>
-                <h3>Address: {user.address ?? 'N/A'}</h3>
-
-                <button
-                  type='button'
-                  onClick={() => setToken('')}
-                >Log Out</button>
-
-                {
-                  isDeleteMode
-                    ? <div>
-                        Are You Sure? This will permanently delete your account.
-                        <button
-                          type='button'
-                          onClick={() => setIsDeleteMode(false)}
-                        >Cancel</button>
-                        <button
-                          type='button'
-                          onClick={deleteUser}
-                        >Delete</button>
-                      </div>
-                    : <button
-                        type='button'
-                        onClick={() => setIsDeleteMode(true)}
-                      >Delete Account</button>
-                } 
               </div>
-        }
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        ) : (
+          <div className="account-fields">
+            <p>Username: {user.username}</p>
+            <p>Email: {user.email}</p>
+            <p>Address: {user.address ?? "N/A"}</p>
+          </div>
+        )}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Account;
