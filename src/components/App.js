@@ -86,12 +86,14 @@ const App = () => {
 
   return (
     <div className='app-container'>
-
+      <div className="all-but-footer">
       <header className='app-header'>
         <div className="img-header-container"> 
-          <img src="https://media.discordapp.net/attachments/1073475284197711905/1128588836990103643/naruto-flexible-mousepad-naruto-ramen.png?width=916&height=916" />
-          <h1 className="header-text"> We Love Ramen!</h1>
+          {/* <img src="https://media.discordapp.net/attachments/1073475284197711905/1128588836990103643/naruto-flexible-mousepad-naruto-ramen.png?width=916&height=916" /> */}
+          <span className="fish-cake">🍥</span>
+          <h1 className="header-text"> We Love Ramen! </h1>
         </div> 
+        <div className="header-links-container">
         <div className='header-links'>
           {user.isAdmin 
           ? <>
@@ -99,15 +101,16 @@ const App = () => {
           <Link to='/admin/users'>Users</Link>
           <Link to='/account'>Account</Link> 
           </> :<>
-          <Link to='/products'>Ramen</Link> |
+          <Link to='/products'>Ramen</Link> 
           {
             token && user.username
               ? <>
-                <Link to='/account'>Account</Link> |
-                <Link to='/cart'>Shopping Cart</Link>
+                <Link to='/account'>Account</Link> 
+                <Link to='/cart'>Cart</Link>
                 </>
               : <Link to='/users/login'>Login</Link>
           }</>}
+          </div>
         </div>
       </header>
 
@@ -193,6 +196,10 @@ const App = () => {
       <Route exact path="/admin/create">
         <AdminCreateProduct token={token} fetchRamen={fetchRamen}/>
       </Route>
+      </div>
+      <footer className="footer">
+      <p className="footer-text">Enjoy Your Ramen!</p>
+      </footer>
     </div>
   );
 };
