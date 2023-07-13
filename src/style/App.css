@@ -509,3 +509,22 @@ img {
   display: flex;
   flex-direction: column;
 }
+
+
+/* ---------------- UsersAdmin.js ---------------- */
+
+.users-admin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.user {
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: white;
+  margin-top: 30px;
+  padding: 10px;
+  width: 600px;
+}
