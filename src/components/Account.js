@@ -99,7 +99,7 @@ const Account = ({ setToken, token, user, setUser }) => {
         </header>
         {isDeleteMode && (
           <div className="delete-confirmation-container">
-            Are You Sure? <span className='raised-eyebrow-emoji'>🤨</span>
+            Are You Sure? <span className="raised-eyebrow-emoji">🤨</span>
             <span className="delete-confirmation-buttons">
               <button type="button" onClick={() => setIsDeleteMode(false)}>
                 Cancel
@@ -154,7 +154,9 @@ const Account = ({ setToken, token, user, setUser }) => {
                 />
               </div>
             </div>
-            <button className='account-edit-submit-button' type="submit">Submit</button>
+            <button className="account-edit-submit-button" type="submit">
+              Submit
+            </button>
           </form>
         ) : (
           <div className="account-fields">

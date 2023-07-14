@@ -143,7 +143,6 @@ router.delete('/:userItemId', async (req, res, next) => {
 
     if (!auth) {
       res.status(401);
-      console.log("reached here: 1", auth);
       next({
         error: 'InvalidTokenError',
         message: "You must be logged in to perform this action"
@@ -152,10 +151,7 @@ router.delete('/:userItemId', async (req, res, next) => {
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length);
       const { id: tokenId , isAdmin } = jwt.verify(token, JWT_SECRET);
-      console.log("userItemId API: ", userItemId);
       const userItem = await getUserItemByUserItemId({ userItemId });
-      //console.log("userItem: ", userItem);
-      console.log("isAdmin: ", isAdmin)
       if (isAdmin === true || tokenId == userItem.userId) {
         const tokenDeleteUserItem = await deleteUserItem({ id: userItemId });
         res.send(tokenDeleteUserItem);
@@ -181,7 +177,6 @@ router.delete('/:userItemId', async (req, res, next) => {
 
     if (!auth) {
       res.status(401);
-      console.log("reached here: 1", auth);
       next({
         error: 'InvalidTokenError',
         message: "You must be logged in to perform this action"
@@ -190,14 +185,11 @@ router.delete('/:userItemId', async (req, res, next) => {
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length);
       const { id: tokenId } = jwt.verify(token, JWT_SECRET);
-      console.log("userItemId API: ", userItemId);
       const userItem = await getUserItemByUserItemId({ userItemId });
-      //console.log("userItem: ", userItem);
 
       if (tokenId == userItem.userId) {
         const tokenDeleteUserItem = await deleteUserItem({ id: userItemId });
         res.send(tokenDeleteUserItem);
-        console.log("reached here: 2");
       }
       else {
         next({

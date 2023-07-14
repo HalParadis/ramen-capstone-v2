@@ -88,8 +88,6 @@ const updateUser = async ({ id, ...fields }) => {
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
   try {
-    console.log('setString', setString);
-    console.log('id', id);
     const { rows: [user] } = await client.query(`
       UPDATE users
       SET ${setString}
@@ -97,8 +95,6 @@ const updateUser = async ({ id, ...fields }) => {
       RETURNING *;
       `, Object.values(fields)
     );
-
-    console.log('user', user);
 
     if (password) {
       const SALT_COUNT = 5;
@@ -111,7 +107,6 @@ const updateUser = async ({ id, ...fields }) => {
         `, [hashedPassword, id]
       );
     }
-    //console.log(user.password)
     return user;
   } catch (error) {
     throw error;
