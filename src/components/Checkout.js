@@ -29,7 +29,6 @@ const Checkout = ({
       newCartItems.push(ramen);
       let ramenPrice = ramen.price.replace(/[^\.0-9]/, '');
       newTotalPrice += ramenPrice * userItem.count;
-      console.log('newTotalPrice', newTotalPrice);
       setTotalPrice(newTotalPrice);
     });
 
@@ -41,7 +40,7 @@ const Checkout = ({
       const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
       const { id } = dataUsersItems.find(userItem => userItem.ramenId == cartItem.id);
       const deletedUserItem = await deleteUserItemAPI({ userItemId: id, token });
-      console.log('deletedUserItem', deletedUserItem);
+      return deletedUserItem;
     });
     history.push('/thank_you!')
   }
@@ -96,20 +95,24 @@ const Checkout = ({
 
         <form className='payment-info-container'>
           <h3 className='checkout-h3'>Payment Information</h3>
-          <lable htmlFor='cardNumber'>Card Number: </lable>
-          <input 
-            type='text'
-            name='cardNumber'
-            value='xxxx-xxxx-xxxx-1234'
-            readOnly='true'
-          />
-          <lable htmlFor='cardName'>Name On Card: </lable>
-          <input 
-            type='text'
-            name='cardName'
-            value='Jane Doe'
-            readOnly='true'
-          />
+          <div className='payment-info'>
+            <lable htmlFor='cardNumber'>Card Number: </lable>
+            <input 
+              type='text'
+              name='cardNumber'
+              value='xxxx-xxxx-xxxx-1234'
+              readOnly='true'
+            />
+          </div>
+          <div className='payment-info'>
+            <lable htmlFor='cardName'>Name On Card: </lable>
+            <input 
+              type='text'
+              name='cardName'
+              value={`${user.username}`}
+              readOnly='true'
+            />
+          </div>
         </form>
       </div>
       <h3>Total Price: {changeToCurrency.format(totalPrice)}</h3>

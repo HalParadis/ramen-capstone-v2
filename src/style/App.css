@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geologica&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Geologica:wght@100&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap');
 
 /* ---------------- App.js ---------------- */
 
@@ -163,6 +163,7 @@ input {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   flex-grow: 1;
   margin: 50px;
@@ -493,6 +494,13 @@ img {
   justify-content: space-between;
 }
 
+.payment-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
 
 /* ---------------- AdminProductDetails.js ---------------- */
 
@@ -534,4 +542,77 @@ img {
   margin-top: 30px;
   padding: 10px;
   width: 600px;
+}
+
+/* ---------------- /thankYou path ---------------- */
+.thank-you-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  padding-bottom: 50px;
+  margin: auto;
+  margin-top: 50px;
+
+}
+
+.thank-you-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 65px;
+  padding: 10px;
+  font-family: 'Darumadrop One', cursive;
+}
+
+.continue-shopping {
+  width: 200px;
+  height: 35px;
+}
+
+/* ---------------- AdminCreateProduct.js ---------------- */
+
+
+.product-create-form {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+.product-create-form > * {
+  margin: 10px;
+}
+
+.admin-create-button {
+  width: 150px;
+  font-size: 13px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  width: 190px;
+  height: 28px;
+}
+
+.admin-create-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-message-container {
+  text-align: center;
+}
+
+.welcome-message-container > * {
+  font-size: 60px;
+  font-family: 'Darumadrop One', cursive;
+  margin:  40px 12px;
+}
+
+.create-product-button {
+  width: 200px;
+  height: 35px;
+  margin-bottom: 40px;
 }

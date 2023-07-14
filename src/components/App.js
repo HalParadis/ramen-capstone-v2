@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, NavLink } from "react-router-dom";
+import { Route, NavLink, Link } from "react-router-dom";
 
 import {
   Products,
@@ -9,7 +9,7 @@ import {
   AdminCreateProduct,
   Account,
   Cart,
-  Checkout
+  Checkout,
 } from "./index";
 
 // getAPIHealth is defined in our axios-services directory index.js
@@ -21,7 +21,7 @@ import {
   getAllUsersFromAPI,
   getRamenByIdFromAPI,
   updateRamenFromAPI,
-  getUsersItemsByUserIdAPI
+  getUsersItemsByUserIdAPI,
 } from "../axios-services";
 
 import "../style/App.css";
@@ -34,15 +34,17 @@ const App = () => {
   const [selectedRamen, setSelectedRamen] = useState(undefined);
   const [token, setToken] = useState(localStorage.getItem("token") ?? "");
   const [allUsers, setAllUsers] = useState([]);
-  const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {});
+  const [user, setUser] = useState(
+    localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
+  );
   const [cartItems, setCartItems] = useState([]);
 
-  const history = useHistory()
+  const history = useHistory();
 
   const fetchRamen = async () => {
     const ramen = await getAllRamenFromAPI();
     setAllRamen(ramen);
-  }
+  };
   const fetchUsers = async () => {
     const users = await getAllUsersFromAPI();
     setAllUsers(users);
@@ -55,7 +57,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log('entered app useEffect');
+    console.log("entered app useEffect");
     // follow this pattern inside your useEffect calls:
     // first, create an async function that will wrap your axios service adapter
     // invoke the adapter, await the response, and set the data
@@ -72,50 +74,95 @@ const App = () => {
     fetchUsers();
 
     if (token !== "") {
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-    }
-    else {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
       setUser({});
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     }
-
   }, [token]);
 
   return (
-    <div className='app-container'>
+    <div className="app-container">
       <div className="all-but-footer">
-        <header className='app-header'>
+        <header className="app-header">
           <div className="img-header-container">
             {/* <img src="https://media.discordapp.net/attachments/1073475284197711905/1128588836990103643/naruto-flexible-mousepad-naruto-ramen.png?width=916&height=916" /> */}
             <span className="fish-cake">🍥</span>
             <h1 className="header-text"> We Love Ramen! </h1>
           </div>
           <div className="header-links-container">
-            <div className='header-links'>
-              {user.isAdmin
-                ? <>
-                  <NavLink activeClassName='selected' className='link' to='/admin/products'>Ramen</NavLink>
-                  <NavLink activeClassName='selected' className='link' to='/admin/users'>Users</NavLink>
-                  <NavLink activeClassName='selected' className='link' to='/account'>Account</NavLink>
-                </> : <>
-                  <NavLink activeClassName='selected' className='link' to='/products'>Ramen</NavLink>
-                  {
-                    token && user.username
-                      ? <>
-                        <NavLink activeClassName='selected' className='link' to='/account'>Account</NavLink>
-                        <NavLink activeClassName='selected' className='link' to='/cart'>Cart</NavLink>
-                      </>
-                      : <NavLink activeClassName='selected' className='link' to='/users/login'>Login</NavLink>
-                  }</>}
+            <div className="header-links">
+              {user.isAdmin ? (
+                <>
+                  <NavLink
+                    activeClassName="selected"
+                    className="link"
+                    to="/admin/products"
+                  >
+                    Ramen
+                  </NavLink>
+                  <NavLink
+                    activeClassName="selected"
+                    className="link"
+                    to="/admin/users"
+                  >
+                    Users
+                  </NavLink>
+                  <NavLink
+                    activeClassName="selected"
+                    className="link"
+                    to="/account"
+                  >
+                    Account
+                  </NavLink>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    activeClassName="selected"
+                    className="link"
+                    to="/products"
+                  >
+                    Ramen
+                  </NavLink>
+                  {token && user.username ? (
+                    <>
+                      <NavLink
+                        activeClassName="selected"
+                        className="link"
+                        to="/account"
+                      >
+                        Account
+                      </NavLink>
+                      <NavLink
+                        activeClassName="selected"
+                        className="link"
+                        to="/cart"
+                      >
+                        Cart
+                      </NavLink>
+                    </>
+                  ) : (
+                    <NavLink
+                      activeClassName="selected"
+                      className="link"
+                      to="/users/login"
+                    >
+                      Login
+                    </NavLink>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </header>
 
-        <Route exact path='/'>
-          <h1>Hello, World!</h1>
-          <p>API Status: {APIHealth}</p>
+        <Route exact path="/">
+          <div className="welcome-message-container">
+            <h2>🍜 Welcome to our site, made by Ramen Lovers for Ramen Lovers! 🍜</h2>
+          </div>
         </Route>
 
         <Route path="/products">
@@ -135,7 +182,7 @@ const App = () => {
           <UserForm setToken={setToken} token={token} setUser={setUser} />
         </Route>
 
-        <Route path='/account'>
+        <Route path="/account">
           <Account
             setToken={setToken}
             token={token}
@@ -144,15 +191,11 @@ const App = () => {
           />
         </Route>
 
-        <Route path='/cart'>
-          <Cart
-            token={token}
-            user={user}
-            fetchRamenById={fetchRamenById}
-          />
+        <Route path="/cart">
+          <Cart token={token} user={user} fetchRamenById={fetchRamenById} />
         </Route>
 
-        <Route path='/checkout'>
+        <Route path="/checkout">
           <Checkout
             token={token}
             fetchRamenById={fetchRamenById}
@@ -162,27 +205,37 @@ const App = () => {
           />
         </Route>
 
-        <Route path='/thank_you!'>
-          <h2>Thank You For Choosing To Shop With Us Today!</h2>
+        <Route path="/thank_you!">
+          <div className="thank-you-message">
+
+            <h2 className="thank-you-text">
+              Thank You For Choosing To Shop With Us Today! 🍜
+            </h2>
+            <button className="continue-shopping"> <Link to="/products">Continue Shopping</Link> </button>
+          </div>
         </Route>
 
-        {
-          user.isAdmin
-            ? <>
-              <Route path="/admin/products">
-                <Products allRamen={allRamen} fetchRamen={fetchRamen} user={user} />
-              </Route>
+        {user.isAdmin ? (
+          <>
+            <Route path="/admin/products">
+              <Products
+                allRamen={allRamen}
+                fetchRamen={fetchRamen}
+                user={user}
+              />
+            </Route>
 
-              <Route path="/admin/users">
-                <UsersAdmin allUsers={allUsers} fetchUsers={fetchUsers}
-                  selectedRamen={selectedRamen}
-                  fetchRamenById={fetchRamenById}
-                  token={token}
-                />
-              </Route>
-            </>
-            : null
-        }
+            <Route path="/admin/users">
+              <UsersAdmin
+                allUsers={allUsers}
+                fetchUsers={fetchUsers}
+                selectedRamen={selectedRamen}
+                fetchRamenById={fetchRamenById}
+                token={token}
+              />
+            </Route>
+          </>
+        ) : null}
 
         <Route path="/admin/product/:productId">
           <AdminProductDetails
@@ -201,7 +254,10 @@ const App = () => {
 
       <footer className="footer">
         <p className="footer-text">Enjoy Your Ramen!</p>
-        <small>This site was made for demonstration purposes only. No actual products are sold on this site.</small>
+        <small>
+          This site was made for demonstration purposes only. No actual products
+          are sold on this site.
+        </small>
       </footer>
     </div>
   );

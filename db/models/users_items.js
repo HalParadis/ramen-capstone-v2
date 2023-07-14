@@ -30,7 +30,6 @@ const getUsersItemsByUserId = async (id) => {
 }
 
 const getUserItemByUserItemId = async ({ userItemId }) => {
-  console.log("userItemId DB: ", userItemId);
   try {
     const { rows: [userItem] } = await client.query(`
       SELECT * 
@@ -51,7 +50,6 @@ const getUsersItemsByRamenId = async (id) => {
         FROM users_items
         WHERE "ramenId"=$1
       `, [id]);
-      console.log("userItems db: ",usersItems)
       return usersItems;
     } catch (error) {
       console.error(error);

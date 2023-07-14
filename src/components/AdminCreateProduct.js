@@ -30,8 +30,9 @@ const AdminCreateProduct = ({ token, fetchRamen }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+    <div className="product-details-page">
+      <form className="product-create-form" onSubmit={handleSubmit}>
+        <label  htmlFor="name">Name</label>
         <input
           type="text"
           name="name"
@@ -61,15 +62,18 @@ const AdminCreateProduct = ({ token, fetchRamen }) => {
           value={brand}
           onChange={(event) => setBrand(event.target.value)}
         />
-        <label htmlFor="image">Image</label>
+        <label htmlFor="image">Image URL</label>
         <input
           type="text"
           name="image"
           value={imgURL}
           onChange={(event) => setImgURL(event.target.value)}
         />
-        <button type="submit">Create</button>
+        <div className="admin-create-button-container">
+        <button className="admin-create-button" type="submit">Create</button>
+        </div>
       </form>
+      </div>
     </>
   );
 };

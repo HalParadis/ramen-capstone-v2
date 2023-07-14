@@ -112,7 +112,6 @@ router.get('/:userId', async (req, res, next) => {
 
 router.delete('/:userId', async (req, res, next) => { 
   try {
-    console.log('entered delete user API');
     const { userId } = req.params;
 
     const prefix = 'Bearer ';
