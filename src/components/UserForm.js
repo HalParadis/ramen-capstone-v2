@@ -21,7 +21,6 @@ const UserForm = ({ setToken, token, setUser }) => {
     setErrorMessage(null);
     if (actionType === "login") {
       const result = await loginAPI({ username, password });
-      console.log(result);
       if (result.user.isAdmin === true) {
         history.push("/account");
       }
@@ -33,7 +32,6 @@ const UserForm = ({ setToken, token, setUser }) => {
       }
     } else {
       const result = await registerAPI({ username, password, email, address });
-      console.log(result);
       if (result.error) {
         setErrorMessage(result.message);
       } else {

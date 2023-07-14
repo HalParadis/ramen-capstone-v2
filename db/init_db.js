@@ -3,15 +3,6 @@ const {
   createUser,
   createRamen,
   createUserItem,
-  getUsersItemsByUserId,
-  updateUserItemCount,
-  deleteUserItem,
-  getAllRamen,
-  getRamenById,
-  deleteRamen,
-  updateRamen,
-  getAllUsers,
-  deleteUser
   // declare your model imports here
   // for example, User
 } = require("./");
@@ -21,7 +12,6 @@ async function buildTables() {
     client.connect();
 
     // drop tables in correct order
-    console.log("Starting to drop tables...");
 
     await client.query(`
       DROP TABLE IF EXISTS users_items;
@@ -29,10 +19,8 @@ async function buildTables() {
       DROP TABLE IF EXISTS ramen;
     `);
 
-    console.log("Finished dropping tables!");
 
     // build tables in correct order
-    console.log("Starting to construct tables...");
 
     await client.query(`
       CREATE TABLE users(
@@ -59,8 +47,6 @@ async function buildTables() {
         count INTEGER
       );
     `);
-
-    console.log("Finished constructing tables!");
   } catch (error) {
     console.error(error);
   }
@@ -68,7 +54,6 @@ async function buildTables() {
 
 async function populateInitialData() {
   try {
-    console.log("Trying to seed tables...");
 
     await createUser({
       username: "Bob",
@@ -95,14 +80,6 @@ async function populateInitialData() {
       isAdmin: "true"
     })
 
-    console.log("Success creating users!");
-
-    // const { rows: users } = await client.query(`
-    //   SELECT * FROM users;
-    // `);
-
-    const users = await getAllUsers()
-    console.log("All users: ", users);
 
     await createRamen({
       name: "Extra Spicy Ramen Soup",
@@ -224,48 +201,11 @@ async function populateInitialData() {
       brand: "Samyang"
     })
 
-    // await createRamen({
-    //   name: "",
-    //   price: "",
-    //   imgURL: "",
-    //   description: "",
-    //   brand: "",
-    // });
-
-    // await createRamen({
-    //   name: "Tonkotsu Ramen",
-    //   price: "$2.00",
-    //   description: "Extra Amazing Ramen",
-    //   brand: "Sapporo Ichiban",
-    // });
-
-    // await createRamen({
-    //   name: "Ramen",
-    //   price: "$2.50",
-    //   description: "Korean Beef Flavored Noodle Soup",
-    //   brand: "Gomtang",
-    // });
-
-
-    console.log("Finished Seeding Ramen");
-
-    const { rows: ramen } = await client.query(`
-      SELECT * FROM ramen
-    `);
-    console.log("All Ramen", ramen);
-   
-
     await createUserItem({
       userId: "2",
       ramenId: "1",
       count: "1",
     });
-
-    // await createUserItem({
-    //   userId: "1",
-    //   ramenId: "3",
-    //   count: "2",
-    // });
 
     await createUserItem({
       userId: "3",
@@ -278,12 +218,7 @@ async function populateInitialData() {
       ramenId: "1",
       count: "1",
     });
-    console.log("Finished seeding users_items");
 
-    const { rows: users_items } = await client.query(`
-      SELECT * FROM users_items
-    `);
-    console.log("All users_items", users_items);
 
   } catch (error) {
     console.error(error);

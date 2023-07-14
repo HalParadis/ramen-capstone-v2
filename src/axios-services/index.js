@@ -61,7 +61,6 @@ export async function updateRamenFromAPI({id, token, ...body}) {
     const headers = { 
       'Authorization': `Bearer ${token}`
   };
-  console.log("id: ", id)
     const { data: ramen } = await axios.patch(`/api/ramen/update/${id}`, {...body} ,  {headers})  
     return ramen;
   } catch (error){
@@ -78,7 +77,6 @@ export function deleteRamenFromAPI({id, token}) {
     return ramen;
   } catch (error){
     console.error(error?.response?.data);
-    console.log(error)
     return error?.response?.data;
   }
 }
@@ -144,7 +142,6 @@ export async function patchUserAPI({userId, token, ...bodyData}) {
       {...bodyData},
       {headers: { Authorization: `Bearer ${token}` }}
     );
-    console.log(data);
     return data;
   }
   catch (error) {
@@ -159,7 +156,6 @@ export async function deleteUserAPI({userId, token}) {
       `/api/users/${userId}`, 
       {headers: { Authorization: `Bearer ${token}` }}
     );
-    console.log('data:', data);
     return data;  
   }
   catch (error) {
@@ -184,7 +180,6 @@ export async function getUsersItemsByUserIdAPI({userId, token}) {
 export async function getUsersItemsByRamenIdAPI({id, token}) {
   try{
     const {data: usersItems} = await axios.get(`/api/users_items/ramen/${id}`, {headers: { Authorization: `Bearer ${token}` }})
-    console.log("usersItems axios: ", usersItems)
     return usersItems;
   } catch (error) {
     console.error(error?.response?.data);
@@ -212,7 +207,6 @@ export async function deleteUserItemAPI({userItemId, token}) {
       `/api/users_items/${userItemId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
-      console.log("deleteData: ", deleteData)
     return deleteData;
   } catch (error) {
     console.error(error?.response?.data);
@@ -227,7 +221,6 @@ export async function postUserItemAPI({ramenId, count, token}) {
       { count },
       {headers: { Authorization: `Bearer ${token}` }}
       );
-      console.log(" Added item: ", newUserItem)
     return newUserItem;
   } catch (error) {
     console.error(error?.response?.data);

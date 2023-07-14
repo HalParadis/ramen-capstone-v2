@@ -21,7 +21,6 @@ const CartItem = ({
     const dataUsersItems = await getUsersItemsByUserIdAPI({ userId: user.id, token });
     const { id } = dataUsersItems.find(userItem => userItem.ramenId == itemId);
     const deletedUserItem = await deleteUserItemAPI({ userItemId: id, token });
-    console.log('deletedUserItem', deletedUserItem);
     await fetchCartItems();
   }
 
