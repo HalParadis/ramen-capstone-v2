@@ -160,7 +160,9 @@ const App = () => {
 
         <Route exact path="/">
           <div className="welcome-message-container">
-            <h2>🍜 Welcome to our site, made by Ramen Lovers for Ramen Lovers! 🍜</h2>
+            <h2>
+              🍜 Welcome to our site, made by Ramen Lovers for Ramen Lovers! 🍜
+            </h2>
           </div>
         </Route>
 
@@ -206,11 +208,13 @@ const App = () => {
 
         <Route path="/thank_you!">
           <div className="thank-you-message">
-
             <h2 className="thank-you-text">
               Thank You For Choosing To Shop With Us Today! 🍜
             </h2>
-            <button className="continue-shopping"> <Link to="/products">Continue Shopping</Link> </button>
+            <button className="continue-shopping">
+              {" "}
+              <Link to="/products">Continue Shopping</Link>{" "}
+            </button>
           </div>
         </Route>
 

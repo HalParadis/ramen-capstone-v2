@@ -30,49 +30,51 @@ const AdminCreateProduct = ({ token, fetchRamen }) => {
 
   return (
     <>
-    <div className="product-details-page">
-      <form className="product-create-form" onSubmit={handleSubmit}>
-        <label  htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          required
-        />
-        <label htmlFor="price">Price</label>
-        <input
-          type="value"
-          name="price"
-          value={price}
-          onChange={(event) => setPrice(event.target.value)}
-          required
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          name="desscription"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-        <label htmlFor="brand">Brand</label>
-        <input
-          type="text"
-          name="brand"
-          value={brand}
-          onChange={(event) => setBrand(event.target.value)}
-        />
-        <label htmlFor="image">Image URL</label>
-        <input
-          type="text"
-          name="image"
-          value={imgURL}
-          onChange={(event) => setImgURL(event.target.value)}
-        />
-        <div className="admin-create-button-container">
-        <button className="admin-create-button" type="submit">Create</button>
-        </div>
-      </form>
+      <div className="product-details-page">
+        <form className="product-create-form" onSubmit={handleSubmit}>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+          />
+          <label htmlFor="price">Price</label>
+          <input
+            type="value"
+            name="price"
+            value={price}
+            onChange={(event) => setPrice(event.target.value)}
+            required
+          />
+          <label htmlFor="description">Description</label>
+          <input
+            type="text"
+            name="desscription"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+          />
+          <label htmlFor="brand">Brand</label>
+          <input
+            type="text"
+            name="brand"
+            value={brand}
+            onChange={(event) => setBrand(event.target.value)}
+          />
+          <label htmlFor="image">Image URL</label>
+          <input
+            type="text"
+            name="image"
+            value={imgURL}
+            onChange={(event) => setImgURL(event.target.value)}
+          />
+          <div className="admin-create-button-container">
+            <button className="admin-create-button" type="submit">
+              Create
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );
