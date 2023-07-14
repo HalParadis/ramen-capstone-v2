@@ -97,6 +97,15 @@
   align-items: center;
 }
 
+.welcome-message-container {
+  text-align: center;
+}
+
+.welcome-message-container > * {
+  font-size: 50px;
+  margin:  40px 12px;
+}
+
 
 /* ---------------- UserForm.js ---------------- */
 
@@ -115,8 +124,6 @@
   max-width: 800px;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 2px 2px var(--pastelPink);
-  box-shadow: 3px 2px 2px grey;
   margin-bottom: 30px;
 }
 
@@ -562,9 +569,8 @@ img {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 65px;
+  font-size: 40px;
   padding: 10px;
-  font-family: 'Darumadrop One', cursive;
 }
 
 .continue-shopping {
@@ -599,16 +605,6 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.welcome-message-container {
-  text-align: center;
-}
-
-.welcome-message-container > * {
-  font-size: 60px;
-  font-family: 'Darumadrop One', cursive;
-  margin:  40px 12px;
 }
 
 .create-product-button {
