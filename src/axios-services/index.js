@@ -1,5 +1,8 @@
 import axios from "axios";
-const BASE_URI = process.env.API_BASE_URI ?? "";
+// const BASE_URI = process.env.API_BASE_URI ?? "";
+
+const BASE_URI = 'https://we-love-ramen.onrender.com';
+
 // this file holds your frontend network request adapters
 // think about each function as a service that provides data
 // to your React UI through AJAX calls
@@ -19,6 +22,7 @@ const BASE_URI = process.env.API_BASE_URI ?? "";
 
 export async function getAllRamenFromAPI() {
   try {
+    console.log(BASE_URI);
     const { data: ramen } = await axios.get(`${BASE_URI}/api/ramen`);
     return ramen;
   } catch (error) {
