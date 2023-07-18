@@ -9,7 +9,7 @@ const Products = ({ allRamen, fetchRamen, user }) => {
   return (
     <div className="products-page">
       <div className="product-list">
-        {allRamen?.map((ramen, idx) => {
+        {(allRamen ?? []).map((ramen, idx) => {
           return (
             <div className="each-product" key={ramen.id ?? idx}>
               <h3 className="ramen-name">{ramen.name}</h3>
