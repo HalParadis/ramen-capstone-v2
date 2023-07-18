@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const BASE_URI = process.env.API_BASE_URI ?? "";
 // this file holds your frontend network request adapters
 // think about each function as a service that provides data
 // to your React UI through AJAX calls
@@ -10,8 +10,7 @@ import axios from "axios";
 /* 
   export async function getUsers() {
     try {
-      const { data: users } = await axios.get('/api/users')
-      return users;
+      const { data: users } = await axios.get(`${BASE_URI}/api/users')`      return users;
     } catch(err) {
       console.error(err)
     }
@@ -20,7 +19,7 @@ import axios from "axios";
 
 export async function getAllRamenFromAPI() {
   try {
-    const { data: ramen } = await axios.get("/api/ramen");
+    const { data: ramen } = await axios.get(`${BASE_URI}/api/ramen`);
     return ramen;
   } catch (error) {
     console.error(error?.response?.data);
@@ -30,7 +29,7 @@ export async function getAllRamenFromAPI() {
 
 export async function getAllUsersFromAPI() {
   try{
-    const { data: users } = await axios.get("/api/users");
+    const { data: users } = await axios.get(`${BASE_URI}/api/users`);
     return users;
   } catch(err) {
     console.error(err)
@@ -39,7 +38,7 @@ export async function getAllUsersFromAPI() {
 
 export async function getRamenByIdFromAPI(id) {
   try {
-    const { data: ramen } = await axios.get(`/api/ramen/${id}`);
+    const { data: ramen } = await axios.get(`${BASE_URI}/api/ramen/${id}`);
     return ramen;
   } catch (error) {
     console.error(error?.response?.data);
@@ -49,7 +48,7 @@ export async function getRamenByIdFromAPI(id) {
 
 export async function getAdminRamenByIdFromAPI(id) {
   try {
-    const { data: ramen } = await axios.get(`/api/ramen/${id}`);
+    const { data: ramen } = await axios.get(`${BASE_URI}/api/ramen/${id}`);
     return ramen;
   } catch (err) {
     console.error(err);
@@ -61,7 +60,7 @@ export async function updateRamenFromAPI({id, token, ...body}) {
     const headers = { 
       'Authorization': `Bearer ${token}`
   };
-    const { data: ramen } = await axios.patch(`/api/ramen/update/${id}`, {...body} ,  {headers})  
+    const { data: ramen } = await axios.patch(`${BASE_URI}/api/ramen/update/${id}`, {...body} ,  {headers})  
     return ramen;
   } catch (error){
     console.error(error)
@@ -73,7 +72,7 @@ export function deleteRamenFromAPI({id, token}) {
     const headers = { 
       'Authorization': `Bearer ${token}`
   };
-    const { data: ramen } = axios.delete(`/api/ramen/delete/${id}`, { headers })
+    const { data: ramen } = axios.delete(`${BASE_URI}/api/ramen/delete/${id}`, { headers })
     return ramen;
   } catch (error){
     console.error(error?.response?.data);
@@ -86,7 +85,7 @@ export function createRamenFromAPI({ token, ...body}) {
     const headers = { 
       'Authorization': `Bearer ${token}`
   };
-    const { data: ramen } = axios.post('/api/ramen/create',{...body}, { headers })
+    const { data: ramen } = axios.post(`${BASE_URI}/api/ramen/create`,{...body}, { headers })
     return ramen;
   } catch (error){
     console.error(error)
@@ -95,7 +94,7 @@ export function createRamenFromAPI({ token, ...body}) {
 
 export async function loginAPI({ username, password }) {
   try {
-    const { data } = await axios.post(`/api/users/login`, {
+    const { data } = await axios.post(`${BASE_URI}/api/users/login`, {
       username,
       password
     });
@@ -108,7 +107,7 @@ export async function loginAPI({ username, password }) {
 
 export async function registerAPI({ username, password, email, address }) {
   try {
-    const { data } = await axios.post(`/api/users/register`, {
+    const { data } = await axios.post(`${BASE_URI}/api/users/register`, {
       username,
       password,
       email,
@@ -124,7 +123,7 @@ export async function registerAPI({ username, password, email, address }) {
 export async function getUserByIdAPI({userId, token}) {
   try {
     const { data } = await axios.get(
-      `/api/users/${userId}`, 
+      `${BASE_URI}/api/users/${userId}`, 
       {headers: { Authorization: `Bearer ${token}` }}
     );
     return data;
@@ -138,7 +137,7 @@ export async function getUserByIdAPI({userId, token}) {
 export async function patchUserAPI({userId, token, ...bodyData}) {
   try {
     const { data } = await axios.patch(
-      `/api/users/${userId}`, 
+      `${BASE_URI}/api/users/${userId}`, 
       {...bodyData},
       {headers: { Authorization: `Bearer ${token}` }}
     );
@@ -153,7 +152,7 @@ export async function patchUserAPI({userId, token, ...bodyData}) {
 export async function deleteUserAPI({userId, token}) {
   try { 
     const { data } = await axios.delete(
-      `/api/users/${userId}`, 
+      `${BASE_URI}/api/users/${userId}`, 
       {headers: { Authorization: `Bearer ${token}` }}
     );
     return data;  
@@ -167,7 +166,7 @@ export async function deleteUserAPI({userId, token}) {
 export async function getUsersItemsByUserIdAPI({userId, token}) {
   try {
     const { data: usersItems } = await axios.get(
-      `/api/users_items/${userId}`,
+      `${BASE_URI}/api/users_items/${userId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
     return usersItems;
@@ -179,7 +178,7 @@ export async function getUsersItemsByUserIdAPI({userId, token}) {
 
 export async function getUsersItemsByRamenIdAPI({id, token}) {
   try{
-    const {data: usersItems} = await axios.get(`/api/users_items/ramen/${id}`, {headers: { Authorization: `Bearer ${token}` }})
+    const {data: usersItems} = await axios.get(`${BASE_URI}/api/users_items/ramen/${id}`, {headers: { Authorization: `Bearer ${token}` }})
     return usersItems;
   } catch (error) {
     console.error(error?.response?.data);
@@ -190,7 +189,7 @@ export async function getUsersItemsByRamenIdAPI({id, token}) {
 export async function patchUserItemAPI({userItemId, token, ...bodyData}) {
   try {
     const { data: updateCount } = await axios.patch(
-      `/api/users_items/${userItemId}`, 
+      `${BASE_URI}/api/users_items/${userItemId}`, 
       {...bodyData},
       {headers: { Authorization: `Bearer ${token}` }}
       );
@@ -204,7 +203,7 @@ export async function patchUserItemAPI({userItemId, token, ...bodyData}) {
 export async function deleteUserItemAPI({userItemId, token}) {
   try {
     const { data: deleteData } = await axios.delete(
-      `/api/users_items/${userItemId}`,
+      `${BASE_URI}/api/users_items/${userItemId}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
     return deleteData;
@@ -217,7 +216,7 @@ export async function deleteUserItemAPI({userItemId, token}) {
 export async function postUserItemAPI({ramenId, count, token}) {
   try {
     const { data: newUserItem } = await axios.post(
-      `/api/users_items/${ramenId}`,
+      `${BASE_URI}/api/users_items/${ramenId}`,
       { count },
       {headers: { Authorization: `Bearer ${token}` }}
       );
@@ -231,7 +230,7 @@ export async function postUserItemAPI({ramenId, count, token}) {
 export async function getUserByIdFromAPI({id, token}) {
   try {
     const { data: user} = await axios.get(
-      `/api/users/${id}`,
+      `${BASE_URI}/api/users/${id}`,
       {headers: { Authorization: `Bearer ${token}` }}
       );
     return user;
@@ -244,7 +243,7 @@ export async function getUserByIdFromAPI({id, token}) {
 
 export async function getAPIHealth() {
   try {
-    const { data } = await axios.get("/api/health");
+    const { data } = await axios.get(`${BASE_URI}/api/health`);
     return data;
   } catch (err) {
     console.error(err);
