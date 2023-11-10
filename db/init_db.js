@@ -9,10 +9,11 @@ const {
 
 async function buildTables() {
   try {
+    console.log('Connecting...');
     client.connect();
 
     // drop tables in correct order
-
+    console.log('Dropping tables...');
     await client.query(`
       DROP TABLE IF EXISTS users_items;
       DROP TABLE IF EXISTS users;
@@ -21,7 +22,7 @@ async function buildTables() {
 
 
     // build tables in correct order
-
+    console.log('Building tables...');
     await client.query(`
       CREATE TABLE users(
         id SERIAL PRIMARY KEY,
@@ -54,7 +55,7 @@ async function buildTables() {
 
 async function populateInitialData() {
   try {
-
+    console.log('Initializing tables...');
     await createUser({
       username: "Bob",
       password: "BobsPassword",
