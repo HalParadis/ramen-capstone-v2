@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server:dev": "nodemon index.js",
     "db:build": "node ./db/init_db",
     "start": "node index.js",
+    "heroku-postbuild": "npm run db:build",
     "test": "jest --runInBand --verbose"
   },
   "keywords": [],
