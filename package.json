@@ -6,7 +6,6 @@
   "scripts": {
     "db:build": "node ./db/init_db",
     "start": "node index.js",
-    "heroku-postbuild": "npm run db:build",
     "test": "jest --runInBand --verbose"
   },
   "keywords": [],
